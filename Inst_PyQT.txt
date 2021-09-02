@@ -1,0 +1,10 @@
+pyuic5.bat
+C:\Users\Toshio\anaconda3\Library\bin\pyuic5.bat
+FirstApp.ui
+C:\programming\FirstApp.ui
+
+Anaconda Prompt
+(base) C:\Users\Toshio
+
+cd c:/programming
+C:\Users\UPCS_OP01\anaconda3\Library\bin\pyuic5.bat C:\programming\Ui\SteraPyDialog.ui -o SteraPyDialog.py

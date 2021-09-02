@@ -1,0 +1,15 @@
+[
+{
+	"name":"c",
+	"appearedIn":1973,
+	"influencedBy":["B", "ALGOL", "Assembly", "Pascal"]
+},
+{
+	"name":"c++",
+	"appearedIn":1980
+},
+{
+	"name":"Python",
+	"appearedIn":1990
+}
+]

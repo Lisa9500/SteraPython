@@ -1,0 +1,17 @@
+コマンドラインで解析
+
+(base) c:\programming>python -m json.tool test.json
+{
+    "\u6771\u4eac": {
+        "population": 1300,
+        "capital": "\u6771\u4eac"
+    },
+    "\u5317\u6d77\u9053": {
+        "population": 538,
+        "capital": "\u672d\u5e4c\u5e02"
+    },
+    "\u6c96\u7e04": {
+        "population": 143,
+        "capital": "\u90a3\u8987\u5e02"
+    }
+}
