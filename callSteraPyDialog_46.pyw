@@ -612,14 +612,14 @@ def f_build_start():
             cords.extend([d1])
             # 分割点はD2点（交点２）
             d2 = [int_2nd_y, int_2nd_x]
-            # 座標値のリストにD1点の座標値を追加する
+            # 座標値のリストにD2点の座標値を追加する
             cords.extend([d2])
             print(cords)
             # 頂点並びの辞書に分割点を追加する
-            d2_num = new_nodes + 1
-            order['D2'] = d2_num
-            d1_num = new_nodes + 2
+            d1_num = new_nodes + 1
             order['D1'] = d1_num
+            d2_num = new_nodes + 2
+            order['D2'] = d2_num
             print(order)
 
             # 四角形L1-D1-R5-R6
@@ -659,6 +659,112 @@ def f_build_start():
 
         elif arr_lr_p == ['L', 'R', 'R', 'R', 'R', 'R', 'L', 'R']:
             oct_type = '歯型2'
+            num1 = order['L1']
+            # 直交する辺は．L点と1つ前の点で結ばれる線分
+            # 直交する辺の座標ペア
+            if num1 == 0:
+                choku_cords_1 = [cords[num1], cords[new_nodes - 1]]
+            else:
+                choku_cords_1 = [cords[num1], cords[num1 - 1]]
+            # 対向する辺は，L点から２つ目と３つ目の点で結ばれる線分
+            # 対向する辺の座標ペア
+            taiko_cords_1 = []
+            if (num1 + 2) > (new_nodes - 1):
+                taiko_cords_1.append(cords[num1 + 2 - new_nodes])
+            else:
+                taiko_cords_1.append(cords[num1 + 2])
+            if (num1 + 3) > (new_nodes - 1):
+                taiko_cords_1.append(cords[num1 + 3 - new_nodes])
+            else:
+                taiko_cords_1.append(cords[num1 + 3])
+            # 直交する直線１と対向する辺１との直交条件を確認する
+            f_chokuko_check(choku_cords_1, taiko_cords_1)
+            int_1st_x = int_x
+            int_1st_y = int_y
+            # 交差角度が制限範囲内でない場合は処理を中断する
+            # if theta < 60 or theta > 120:
+            #     continue
+                # f_tri_mesh(cord2)
+
+            num2 = order['L2']
+            # もう一方の直交する辺は．L点と1つ次の点で結ばれる線分
+            # 直交する辺の座標ペア
+            if num2 == (new_nodes - 1):
+                choku_cords_2 = [cords[num2], cords[0]]
+            else:
+                choku_cords_2 = [cords[num2], cords[num2 + 1]]
+            # 対向する辺は，L点から５つ目と６つ目の点で結ばれる線分
+            # 対向する辺の座標ペア
+            # hen_coprds = [[] for _ in range(hen_cnt)]
+            taiko_cords_2 = []
+            if (num2 + 5) > (new_nodes - 1):
+                taiko_cords_2.append(cords[num2 + 5 - new_nodes])
+            else:
+                taiko_cords_2.append(cords[num2 + 5])
+            if (num2 + 6) > (new_nodes - 1):
+                taiko_cords_2.append(cords[num2 + 6 - new_nodes])
+            else:
+                taiko_cords_2.append(cords[num2 + 6])
+            # 直交する直線２と対向する辺２との直交条件を確認する
+            f_chokuko_check(choku_cords_2, taiko_cords_2)
+            int_2nd_x = int_x
+            int_2nd_y = int_y
+            # 交差角度が制限範囲内でない場合は処理を中断する
+            # if theta < 60 or theta > 120:
+            #     continue
+            # f_tri_mesh(cord2)
+
+            # 分割点はD1点（交点１）
+            d1 = [int_1st_y, int_1st_x]
+            # 座標値のリストにD1点の座標値を追加する
+            cords.extend([d1])
+            # 分割点はD2点（交点２）
+            d2 = [int_2nd_y, int_2nd_x]
+            # 座標値のリストにD2点の座標値を追加する
+            cords.extend([d2])
+            print(cords)
+            # 頂点並びの辞書に分割点を追加する
+            d1_num = new_nodes + 1
+            order['D1'] = d1_num
+            d2_num = new_nodes + 2
+            order['D2'] = d2_num
+            print(order)
+
+            # 四角形L1-D1-R5-R6
+            rect_1_name = ['L2', 'D2', 'R4', 'R5']
+            # 四角形L2-R2-R3-D2
+            rect_2_name = ['L1', 'R1', 'R2', 'D1']
+            # 四角形R1-D2-R4-D1
+            rect_3_name = ['R6', 'D1', 'R3', 'D2']
+
+            # 辞書の中味に従ってリストの座標データで四角形を作る
+            rect_1_list = []
+            for name in rect_1_name:
+                n = order[name]
+                rect_1_list.append(cords[n])
+                # tsuma_line =
+                # yane_type =
+                # f_make_roof(rect_1_list, tsuma_line, yane_type)
+            print(rect_1_list)
+            # 辞書の中味に従ってリストの座標データで四角形を作る
+            rect_2_list = []
+            for name in rect_2_name:
+                n = order[name]
+                rect_2_list.append(cords[n])
+                # tsuma_line =
+                # yane_type =
+                # f_make_roof(rect_2_list, tsuma_line, yane_type)
+            print(rect_2_list)
+            # 辞書の中味に従ってリストの座標データで四角形を作る
+            rect_3_list = []
+            for name in rect_3_name:
+                n = order[name]
+                rect_3_list.append(cords[n])
+                # tsuma_line =
+                # yane_type =
+                # f_make_roof(rect_3_list, tsuma_line, yane_type)
+            print(rect_3_list)
+
         elif arr_lr_p == ['L', 'L', 'R', 'R', 'R', 'R', 'R', 'R']:
             oct_type = '凹型1'
         elif arr_lr_p == ['L', 'R', 'R', 'R', 'R', 'R', 'R', 'L']:
