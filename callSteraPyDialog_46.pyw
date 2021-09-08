@@ -13,7 +13,6 @@ from SteraPyDialog import *
 
 
 def f_build_start():
-
     # リストの要素から値を取得する
     def f_ext_elem(ftr):
         # ftr = data
@@ -51,14 +50,14 @@ def f_build_start():
             # 次の頂点までの距離を求める
             if j != (tops - 1):
                 # ベクトルAのX座標の差分
-                chk_vect_x = cord2[j + 1][0] - cord2[j][0]
+                chk_vect_x = cord2[j + 1][1] - cord2[j][1]
                 # ベクトルAのY座標の差分
-                chk_vect_y = cord2[j + 1][1] - cord2[j][1]
+                chk_vect_y = cord2[j + 1][0] - cord2[j][0]
                 print(j, "ベクトルX", chk_vect_x)
                 print(j, "ベクトルY", chk_vect_y)
             else:
-                chk_vect_x = cord2[0][0] - cord2[j][0]
-                chk_vect_y = cord2[0][1] - cord2[j][1]
+                chk_vect_x = cord2[0][1] - cord2[j][1]
+                chk_vect_y = cord2[0][0] - cord2[j][0]
                 print(j, "ベクトルX", chk_vect_x)
                 print(j, "ベクトルY", chk_vect_y)
             if abs(chk_vect_x) < 1.0 and abs(chk_vect_y) < 1.0:
@@ -83,6 +82,7 @@ def f_build_start():
 
     # 頂点数が奇数の場合，最大鈍角の頂点を削除する
     def f_flat_vert(chk_nodes):
+        global new_nodes
         # 内積を求めて３点からなら角度を求める，
         max_deg = 0
         del_codes = 0
@@ -141,9 +141,10 @@ def f_build_start():
         for j in range(chk_nodes):
             print(j, 'X', cord2[j][1])
             print(j, 'Y', cord2[j][0])
-        global ret_nodes
-        ret_nodes = chk_nodes
-        return ret_nodes
+        # global ret_nodes
+        # ret_nodes = chk_nodes
+        # return ret_nodes
+        new_nodes = chk_nodes
 
     # 外積を求めてL点かどうか判断する
     def f_ccw_check(ccw_nodes):
@@ -471,6 +472,7 @@ def f_build_start():
             else:
                 continue
             print("normal termination")
+            continue
         print("All finished")
 
         # L点から対向する二辺までの距離を比較する
@@ -576,7 +578,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
 
             num2 = order['L2']
             # もう一本の直交する辺は．L点と1つ次の点で結ばれる線分
@@ -684,7 +686,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
 
             num2 = order['L2']
             # もう一本の直交する辺は．L点と1つ次の点で結ばれる線分
@@ -792,7 +794,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
             if num1 == (new_nodes - 1):
@@ -1059,7 +1061,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
             if num1 == (new_nodes - 1):
@@ -1326,7 +1328,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
             if num1 == (new_nodes - 1):
@@ -1413,7 +1415,8 @@ def f_build_start():
             # print(int_1a_x)
             # print(int_1a_y)
             # 交点1aが R2-L2上にあるかチェックする
-            if (taiko_cords_1a[0][1] < int_1a_x < taiko_cords_1a[1][1]) or (taiko_cords_1a[0][1] < int_1a_x < taiko_cords_1a[1][1]):
+            if (taiko_cords_1a[0][1] < int_1a_x < taiko_cords_1a[1][1]) or (
+                    taiko_cords_1a[0][1] > int_1a_x > taiko_cords_1a[1][1]):
                 # 交点1aまでの距離
                 div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
                 print("div_line_a=", div_line_1a)
@@ -1440,7 +1443,7 @@ def f_build_start():
             # print(int_2b_y)
             # 交点2bが L1-R1上にあるかチェックする
             if (taiko_cords_2b[0][1] < int_2b_x < taiko_cords_2b[1][1]) or (
-                    taiko_cords_2b[0][1] < int_2b_x < taiko_cords_2b[1][1]):
+                    taiko_cords_2b[0][1] > int_2b_x > taiko_cords_2b[1][1]):
                 # 交点2bまでの距離
                 div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
                 print("div_line_b=", div_line_2b)
@@ -1604,7 +1607,7 @@ def f_build_start():
             # 交差角度が制限範囲内でない場合は処理を中断する
             # if theta < 60 or theta > 120:
             #     continue
-                # f_tri_mesh(cord2)
+            # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
             if num1 == (new_nodes - 1):
@@ -1697,7 +1700,8 @@ def f_build_start():
             # print(int_1b_x)
             # print(int_1b_y)
             # 交点1bが L2-R5上にあるかチェックする
-            if (taiko_cords_1b[0][1] < int_1b_x < taiko_cords_1b[1][1]) or (taiko_cords_1b[0][1] < int_1b_x < taiko_cords_1b[1][1]):
+            if (taiko_cords_1b[0][1] < int_1b_x < taiko_cords_1b[1][1]) or (
+                    taiko_cords_1b[0][1] > int_1b_x > taiko_cords_1b[1][1]):
                 # 交点1bまでの距離
                 div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
                 print("div_line_a=", div_line_1b)
@@ -1712,7 +1716,7 @@ def f_build_start():
             # print(int_2a_y)
             # 交点2aが R6-L1上にあるかチェックする
             if (taiko_cords_2a[0][1] < int_2a_x < taiko_cords_2a[1][1]) or (
-                    taiko_cords_2a[0][1] < int_2a_x < taiko_cords_2a[1][1]):
+                    taiko_cords_2a[0][1] > int_2a_x > taiko_cords_2a[1][1]):
                 # 交点2bまでの距離
                 div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
                 print("div_line_b=", div_line_2a)
@@ -1857,8 +1861,136 @@ def f_build_start():
 
         elif arr_lr_p == ['L', 'R', 'R', 'R', 'L', 'R', 'R', 'R']:
             oct_type = 'Ｓ型'
-        print(oct_type)
+            # L1点から頂点2-3，頂点3-4，頂点4-5，頂点5-6の辺との直交対向関係により型分類する
+            flag_edge_2_3 = False
+            flag_edge_5_6 = False
+            flag_edge_3_4 = False
+            flag_edge_4_5 = False
 
+            num1 = order['L1']
+            # １つ目の直交する辺は．L点と1つ前の点で結ばれる線分
+            # 直交する辺の座標ペア
+            if num1 == 0:
+                choku_cords_1ap = [cords[num1], cords[new_nodes - 1]]
+            else:
+                choku_cords_1ap = [cords[num1], cords[num1 - 1]]
+
+            # 頂点2-3の辺の座標ペア
+            taiko_cords_1a1 = []
+            if (num1 + 2) > (new_nodes - 1):
+                taiko_cords_1a1.append(cords[num1 + 2 - new_nodes])
+            else:
+                taiko_cords_1a1.append(cords[num1 + 2])
+            if (num1 + 3) > (new_nodes - 1):
+                taiko_cords_1a1.append(cords[num1 + 3 - new_nodes])
+            else:
+                taiko_cords_1a1.append(cords[num1 + 3])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1ap, taiko_cords_1a1)
+            int_1a_x = int_x
+            int_1a_y = int_y
+            # 交差角度が制限範囲内かどうか確認する
+            if 60 < theta < 120:
+                # 交点が対向する辺上にあるかチェックする
+                if (taiko_cords_1a1[0][1] < int_1a_x < taiko_cords_1a1[1][1]) or (
+                        taiko_cords_1a1[0][1] > int_1a_x > taiko_cords_1a1[1][1]):
+                    # L1点から２つ目-３つ目の辺の直交対向条件を満たす
+                    flag_edge_2_3 = True
+                    print('flag_edge_2_3', flag_edge_2_3)
+
+            # 頂点4-5の辺の座標ペア
+            taiko_cords_1a3 = []
+            if (num1 + 4) > (new_nodes - 1):
+                taiko_cords_1a3.append(cords[num1 + 4 - new_nodes])
+            else:
+                taiko_cords_1a3.append(cords[num1 + 4])
+            if (num1 + 5) > (new_nodes - 1):
+                taiko_cords_1a3.append(cords[num1 + 5 - new_nodes])
+            else:
+                taiko_cords_1a3.append(cords[num1 + 5])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1ap, taiko_cords_1a3)
+            int_1a_x = int_x
+            int_1a_y = int_y
+            # 交差角度が制限範囲内かどうか確認する
+            if 60 < theta < 120:
+                # 交点が対向する辺上にあるかチェックする
+                if (taiko_cords_1a3[0][1] < int_1a_x < taiko_cords_1a3[1][1]) or (
+                        taiko_cords_1a3[0][1] > int_1a_x > taiko_cords_1a3[1][1]):
+                    # L1点から２つ目-３つ目の辺の直交対向条件を満たす
+                    flag_edge_4_5 = True
+                    print('flag_edge_4_5', flag_edge_4_5)
+
+            # もう一方の直交する辺は．L点と次の点で結ばれる線分
+            # 直交する辺の座標ペア
+            if num1 == (new_nodes - 1):
+                choku_cords_1an = [cords[num1], cords[0]]
+            else:
+                choku_cords_1an = [cords[num1], cords[num1 + 1]]
+
+            # 頂点3-4の辺の座標ペア
+            taiko_cords_1a2 = []
+            if (num1 + 3) > (new_nodes - 1):
+                taiko_cords_1a2.append(cords[num1 + 3 - new_nodes])
+            else:
+                taiko_cords_1a2.append(cords[num1 + 3])
+            if (num1 + 4) > (new_nodes - 1):
+                taiko_cords_1a2.append(cords[num1 + 4 - new_nodes])
+            else:
+                taiko_cords_1a2.append(cords[num1 + 4])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1an, taiko_cords_1a2)
+            int_1a_x = int_x
+            int_1a_y = int_y
+            # 交差角度が制限範囲内かどうか確認する
+            if 60 < theta < 120:
+                # 交点が対向する辺上にあるかチェックする
+                if (taiko_cords_1a2[0][1] < int_1a_x < taiko_cords_1a2[1][1]) or (
+                        taiko_cords_1a2[0][1] > int_1a_x > taiko_cords_1a2[1][1]):
+                    # L1点から２つ目-３つ目の辺の直交対向条件を満たす
+                    flag_edge_3_4 = True
+                    print('flag_edge_3_4', flag_edge_3_4)
+
+            # 頂点5-6の辺の座標ペア
+            taiko_cords_1a4 = []
+            if (num1 + 5) > (new_nodes - 1):
+                taiko_cords_1a4.append(cords[num1 + 5 - new_nodes])
+            else:
+                taiko_cords_1a4.append(cords[num1 + 5])
+            if (num1 + 6) > (new_nodes - 1):
+                taiko_cords_1a4.append(cords[num1 + 6 - new_nodes])
+            else:
+                taiko_cords_1a4.append(cords[num1 + 6])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1an, taiko_cords_1a4)
+            int_1a_x = int_x
+            int_1a_y = int_y
+            # 交差角度が制限範囲内かどうか確認する
+            if 60 < theta < 120:
+                # 交点が対向する辺上にあるかチェックする
+                if (taiko_cords_1a4[0][1] < int_1a_x < taiko_cords_1a4[1][1]) or (
+                        taiko_cords_1a4[0][1] > int_1a_x > taiko_cords_1a4[1][1]):
+                    # L1点から２つ目-３つ目の辺の直交対向条件を満たす
+                    flag_edge_5_6 = True
+                    print('flag_edge_5_6', flag_edge_5_6)
+
+            # 対抗する辺との直交条件から型分類を行う
+            if flag_edge_2_3 == True and flag_edge_5_6 == True:
+                oct_s_type = 'Rotation_S'
+                print(oct_s_type)
+            elif flag_edge_2_3 == True and flag_edge_3_4 == True:
+                oct_s_type = 'typeA_S'
+                print(oct_s_type)
+            elif flag_edge_4_5 == True and flag_edge_5_6 == True:
+                oct_s_type = 'typeB_S'
+                print(oct_s_type)
+            else:
+                oct_s_type = 'Others：陸屋根'
+                print(oct_s_type)
+            #     continue
+            #     f_tri_mesh(cord2)
+
+        print(oct_type)
 
     # 普通建物を１件ずつモデリングする（逐次処理）
     def main():
@@ -1899,12 +2031,17 @@ def f_build_start():
             # 頂点数が奇数の場合は，偶数になるように最大鈍角の頂点を削除する
             if new_nodes % 2 != 0:
                 f_flat_vert(new_nodes)
+                # new_nodes = ret_nodes
 
                 # 頂点数が偶数とならなかった場合は，陸屋根建物とするため３角形分割する．
-                if ret_nodes % 2 != 0:
+                if new_nodes % 2 != 0:
                     sloping_roof = False
                     continue
                     # f_tri_mesh(cord2)
+                # else:
+                #     new_nodes = ret_nodes
+
+            # 頂点削除後の頂点数
 
             # 頂点がL点かどうかチェックする（外積計算）
             f_ccw_check(new_nodes)
@@ -1946,11 +2083,11 @@ def f_build_start():
             gene_lr_listdic(new_nodes)
 
             # L点の数が凹角の数と一致しない場合は，陸屋根建物とするため３角形分割する．
-            print(len(l_list))
-            print(l_cnt)
-            if len(l_list) != l_cnt:
-                sloping_roof = False
-                continue
+            # print(len(l_list))
+            # print(l_cnt)
+            # if len(l_list) != l_cnt:
+            #     sloping_roof = False
+            #     continue
                 # f_tri_mesh(cord2)
 
             # ６角形の四角形分割
@@ -1963,6 +2100,7 @@ def f_build_start():
 
             # 屋根タイプ別の比率を設定する
             # モデリングする
+
     main()
 
 
