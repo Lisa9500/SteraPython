@@ -79,7 +79,7 @@ def f_build_start():
             S.append(s)
             print("S[j]=", S[j])
             # 外積の結果で左回りか右回りか判断する
-            if S[j] > 0:  # 左回り
+            if S[j] >= -0.1:  # 左回り
                 LH += 1
                 # L点の場合は，角度が約270°かチェックする（内積計算）
                 # 内角計算->凹角　約270°でない場合は四角形分割を中断
@@ -88,7 +88,7 @@ def f_build_start():
                 print('内角=', naikaku)
                 in_angle[j] = naikaku
 
-            elif S[j] < 0:  # 右回り
+            elif S[j] < -0.1:  # 右回り
                 RH += 1
         print('in_angle', in_angle)
 
@@ -150,48 +150,10 @@ def f_build_start():
         theta = math.degrees(math.acos(cos_theta))
         # print("角度", theta)
 
-    # 頂点間の距離をチェックする，近接する頂点を削除する
-    def f_chk_vert_dist(vert):
-        del_nodes_lst = []
-        global new_nodes
-        new_nodes = 0
-        for j in range(vert):
-            # 次の頂点までの距離を求める
-            if j != (vert - 1):
-                # ベクトルAのX座標の差分
-                chk_vect_x = cord2[j + 1][1] - cord2[j][1]
-                # ベクトルAのY座標の差分
-                chk_vect_y = cord2[j + 1][0] - cord2[j][0]
-                print(j, "ベクトルX", chk_vect_x)
-                print(j, "ベクトルY", chk_vect_y)
-            else:
-                chk_vect_x = cord2[0][1] - cord2[j][1]
-                chk_vect_y = cord2[0][0] - cord2[j][0]
-                print(j, "ベクトルX", chk_vect_x)
-                print(j, "ベクトルY", chk_vect_y)
-            if abs(chk_vect_x) < 1.0 and abs(chk_vect_y) < 1.0:
-                del_nodes_lst.append(j + 1)
-        print('削除するノード', del_nodes_lst)
-
-        del_cnt = len(del_nodes_lst)
-        if del_cnt != 0:
-            in_cnt = 0
-            for lst in range(del_cnt):
-                print('lst', del_nodes_lst[lst])
-                cord2.pop(del_nodes_lst[lst] - in_cnt)
-                in_cnt += 1
-            new_nodes = vert - del_cnt
-            for j in range(new_nodes):
-                print(j, 'X', cord2[j][0])
-                print(j, 'Y', cord2[j][1])
-        # Date210830 コーディングの目的が不明なためコメント化した．
-        if new_nodes == 0:
-            new_nodes = vert
-        print('new_nodes=', new_nodes)
-
     # 内角が約180°の頂点を削除する
     def f_flat_vert(vert):
         global in_angle
+        global del_cnt
         del_vert_lst = []
         for i in range(vert):
             if 175 < in_angle[i] < 185:
@@ -203,72 +165,60 @@ def f_build_start():
             for lst in range(del_cnt):
                 print('180_lst', del_vert_lst[lst])
                 in_angle.pop(del_vert_lst[lst] - in_cnt)
+                S.pop(del_vert_lst[lst] - in_cnt)
                 in_cnt += 1
+            return del_cnt
         print('in_angle', in_angle)
 
-        # global new_nodes
-        # # 内積を求めて３点からなら角度を求める，
-        # max_deg = 0
-        # del_codes = 0
-        # for j in range(chk_nodes):
-        #     # 隣合う点との間の距離から辺の長さを求める
-        #     if j != (chk_nodes - 1):
-        #         # ベクトルAのX座標の差分
-        #         vect_ax = cord2[j + 1][1] - cord2[j][1]
-        #         # ベクトルAのY座標の差分
-        #         vect_ay = cord2[j + 1][0] - cord2[j][0]
-        #         # ベクトルAの長さ
-        #         vector_a = math.sqrt(vect_ax ** 2 + vect_ay ** 2)
-        #         print(j, "ベクトルAx", vect_ax)
-        #         print(j, "ベクトルAy", vect_ay)
-        #         print(j, "ベクトルA", vector_a)
-        #     else:
-        #         vect_ax = cord2[0][1] - cord2[j][1]
-        #         vect_ay = cord2[0][0] - cord2[j][0]
-        #         vector_a = math.sqrt(vect_ax ** 2 + vect_ay ** 2)
-        #         print(j, "ベクトルAx", vect_ax)
-        #         print(j, "ベクトルAy", vect_ay)
-        #         print(j, "ベクトルA", vector_a)
-        #     if j != 0:
-        #         # ベクトルBのX座標の差分
-        #         vect_bx = cord2[j - 1][1] - cord2[j][1]
-        #         # ベクトルBのY座標の差分
-        #         vect_by = cord2[j - 1][0] - cord2[j][0]
-        #         # ベクトルBの長さ
-        #         vector_b = math.sqrt(vect_bx ** 2 + vect_by ** 2)
-        #         print(j, "ベクトルBx", vect_bx)
-        #         print(j, "ベクトルBy", vect_by)
-        #         print(j, "ベクトルB", vector_b)
-        #     else:
-        #         vect_bx = cord2[chk_nodes - 1][1] - cord2[0][1]
-        #         vect_by = cord2[chk_nodes - 1][0] - cord2[0][0]
-        #         vector_b = math.sqrt(vect_bx ** 2 + vect_by ** 2)
-        #         print(j, "ベクトルBx", vect_bx)
-        #         print(j, "ベクトルBy", vect_by)
-        #         print(j, "ベクトルB", vector_b)
-        #     # cosθを求める
-        #     cos_theta = (vect_ax * vect_bx + vect_ay * vect_by) / (vector_a * vector_b)
-        #     print(j, "cosθ", cos_theta)
-        #     # 角度を求める
-        #     obt_angle = math.degrees(math.acos(cos_theta))
-        #     print(j, "角度", obt_angle)
-        #     # 最大鈍角（175°～185°）の頂点を削除する
-        #     if obt_angle > max_deg:
-        #         max_deg = obt_angle
-        #         del_codes = j
-        # print('max_deg=', max_deg)
-        # if 175 < max_deg < 185:
-        #     print('削除するノード', del_codes)
-        #     cord2.pop(del_codes)
-        #     chk_nodes -= 1
-        # print('chk_nodes=', chk_nodes)
-        # for j in range(chk_nodes):
-        #     print(j, 'X', cord2[j][1])
-        #     print(j, 'Y', cord2[j][0])
-        # # global ret_nodes
-        # # ret_nodes = chk_nodes
-        # # return ret_nodes
-        # new_nodes = chk_nodes
+    # 頂点間の距離をチェックする，近接する頂点を削除する
+    def f_chk_vert_dist(vert):
+        del_nodes_lst = []
+        global new_nodes
+        new_nodes = 0
+        for j in range(vert):
+            # 次の頂点までの距離を求める
+            if j != (vert - 1):
+                next = j + 1
+                # ベクトルAのX座標の差分
+                chk_vect_x = cord2[j + 1][1] - cord2[j][1]
+                # ベクトルAのY座標の差分
+                chk_vect_y = cord2[j + 1][0] - cord2[j][0]
+                print(j, "ベクトルX", chk_vect_x)
+                print(j, "ベクトルY", chk_vect_y)
+            else:
+                next = 0
+                chk_vect_x = cord2[0][1] - cord2[j][1]
+                chk_vect_y = cord2[0][0] - cord2[j][0]
+                print(j, "ベクトルX", chk_vect_x)
+                print(j, "ベクトルY", chk_vect_y)
+            # if abs(chk_vect_x) < 1.0 and abs(chk_vect_y) < 1.0:
+            if abs(chk_vect_x) < 0.1 and abs(chk_vect_y) < 0.1:
+                if S[j] > 0:
+                    del_nodes_lst.append(j)
+                elif S[next] > 0:
+                    del_nodes_lst.append(next)
+                else:
+                    cord2[j][1] = cord2[j][1] + chk_vect_x / 2
+                    cord2[j][0] = cord2[j][0] + chk_vect_y / 2
+                    del_nodes_lst.append(next)
+        print('削除するノード', del_nodes_lst)
+
+        del_cnt = len(del_nodes_lst)
+        if del_cnt != 0:
+            in_cnt = 0
+            for lst in range(del_cnt):
+                print('lst', del_nodes_lst[lst])
+                cord2.pop(del_nodes_lst[lst] - in_cnt)
+                S.pop(del_nodes_lst[lst] - in_cnt)
+                in_cnt += 1
+            new_nodes = vert - del_cnt
+            for j in range(new_nodes):
+                print(j, 'X', cord2[j][0])
+                print(j, 'Y', cord2[j][1])
+        # Date210830 コーディングの目的が不明なためコメント化した．
+        if new_nodes == 0:
+            new_nodes = vert
+        print('new_nodes=', new_nodes)
 
     # 頂点の並びが時計回りなので反時計回りに並び変える
     def f_back_reverse(rev_nodes):
@@ -503,15 +453,9 @@ def f_build_start():
         # L点の座標
         print(cords[num][1])
         print(cords[num][0])
-        # 交点１の座標
-        # print(int_1st_x)
-        # print(int_1st_y)
-        # 交点１までの距離
+       # 交点１までの距離
         div_line_a = math.sqrt((cords[num][1] - int_1st_x) ** 2 + (cords[num][0] - int_1st_y) ** 2)
         print("div_line_a=", div_line_a)
-        # 交点２の座標
-        # print(int_2nd_x)
-        # print(int_2nd_y)
         # 交点２までの距離
         div_line_b = math.sqrt((cords[num][1] - int_2nd_x) ** 2 + (cords[num][0] - int_2nd_y) ** 2)
         print("div_line_b=", div_line_b)
@@ -901,30 +845,18 @@ def f_build_start():
             # L1点の座標
             print(cords[num1][1])
             print(cords[num1][0])
-            # 交点1aの座標
-            # print(int_1a_x)
-            # print(int_1a_y)
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
             print("div_line_a=", div_line_1a)
-            # 交点1bの座標
-            # print(int_1b_x)
-            # print(int_1b_y)
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
             print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
-            # 交点2aの座標
-            # print(int_2a_x)
-            # print(int_2a_y)
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
             print("div_line_a=", div_line_2a)
-            # 交点2bの座標
-            # print(int_2b_x)
-            # print(int_2b_y)
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
             print("div_line_b=", div_line_2b)
@@ -1168,30 +1100,18 @@ def f_build_start():
             # L1点の座標
             print(cords[num1][1])
             print(cords[num1][0])
-            # 交点1aの座標
-            # print(int_1a_x)
-            # print(int_1a_y)
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
             print("div_line_a=", div_line_1a)
-            # 交点1bの座標
-            # print(int_1b_x)
-            # print(int_1b_y)
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
             print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
-            # 交点2aの座標
-            # print(int_2a_x)
-            # print(int_2a_y)
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
             print("div_line_a=", div_line_2a)
-            # 交点2bの座標
-            # print(int_2b_x)
-            # print(int_2b_y)
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
             print("div_line_b=", div_line_2b)
@@ -1435,9 +1355,6 @@ def f_build_start():
             # L1点の座標
             print(cords[num1][1])
             print(cords[num1][0])
-            # 交点1aの座標
-            # print(int_1a_x)
-            # print(int_1a_y)
             # 交点1aが R2-L2上にあるかチェックする
             if (taiko_cords_1a[0][1] < int_1a_x < taiko_cords_1a[1][1]) or (
                     taiko_cords_1a[0][1] > int_1a_x > taiko_cords_1a[1][1]):
@@ -1447,24 +1364,15 @@ def f_build_start():
             else:
                 f_inf = float('inf')
                 div_line_1a = f_inf
-            # 交点1bの座標
-            # print(int_1b_x)
-            # print(int_1b_y)
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
             print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
-            # 交点2aの座標
-            # print(int_2a_x)
-            # print(int_2a_y)
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
             print("div_line_a=", div_line_2a)
-            # 交点2bの座標
-            # print(int_2b_x)
-            # print(int_2b_y)
             # 交点2bが L1-R1上にあるかチェックする
             if (taiko_cords_2b[0][1] < int_2b_x < taiko_cords_2b[1][1]) or (
                     taiko_cords_2b[0][1] > int_2b_x > taiko_cords_2b[1][1]):
@@ -1714,15 +1622,9 @@ def f_build_start():
             # L1点の座標
             print(cords[num1][1])
             print(cords[num1][0])
-            # 交点1aの座標
-            # print(int_1a_x)
-            # print(int_1a_y)
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
             print("div_line_b=", div_line_1a)
-            # 交点1bの座標
-            # print(int_1b_x)
-            # print(int_1b_y)
             # 交点1bが L2-R5上にあるかチェックする
             if (taiko_cords_1b[0][1] < int_1b_x < taiko_cords_1b[1][1]) or (
                     taiko_cords_1b[0][1] > int_1b_x > taiko_cords_1b[1][1]):
@@ -1735,9 +1637,6 @@ def f_build_start():
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
-            # 交点2aの座標
-            # print(int_2a_x)
-            # print(int_2a_y)
             # 交点2aが R6-L1上にあるかチェックする
             if (taiko_cords_2a[0][1] < int_2a_x < taiko_cords_2a[1][1]) or (
                     taiko_cords_2a[0][1] > int_2a_x > taiko_cords_2a[1][1]):
@@ -1747,9 +1646,6 @@ def f_build_start():
             else:
                 f_inf = float('inf')
                 div_line_2a = f_inf
-            # 交点2bの座標
-            # print(int_2b_x)
-            # print(int_2b_y)
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
             print("div_line_a=", div_line_2b)
@@ -2053,13 +1949,7 @@ def f_build_start():
 
             # 内角が約180°の頂点を削除する
             f_flat_vert(vert)
-
-            # for i in range(vert):
-            #     if 175 < in_angle[i] < 185:
-            #         cord2.pop(i)
-            #         vert -= 1
-            # print('vert', vert)
-            # print('cord2', cord2)
+            vert = vert - del_cnt
 
             # 近接している頂点を削除する
             f_chk_vert_dist(vert)  # new_nodes 登場
@@ -2068,19 +1958,6 @@ def f_build_start():
             # if new_nodes < 6:
             #     continue
             # 処理を続けて４角形にする．４角形にならない場合は，陸屋根建物とするため３角形分割する．
-
-            # # 頂点数が奇数の場合は，偶数になるように最大鈍角の頂点を削除する
-            # if new_nodes % 2 != 0:
-            #     f_flat_vert(new_nodes)
-            #     # new_nodes = ret_nodes
-            #
-            #     # 頂点数が偶数とならなかった場合は，陸屋根建物とするため３角形分割する．
-            #     if new_nodes % 2 != 0:
-            #         sloping_roof = False
-            #         continue
-            #         # f_tri_mesh(cord2)
-            #     # else:
-            #     #     new_nodes = ret_nodes
 
             # 頂点削除後の頂点数
             print('new_nodes = ', new_nodes)
@@ -2120,14 +1997,6 @@ def f_build_start():
 
             # L点とR点をリストおよび辞書に振り分ける
             gene_lr_listdic(new_nodes)
-
-            # L点の数が凹角の数と一致しない場合は，陸屋根建物とするため３角形分割する．
-            # print(len(l_list))
-            # print(l_cnt)
-            # if len(l_list) != l_cnt:
-            #     sloping_roof = False
-            #     continue
-            # f_tri_mesh(cord2)
 
             # ６角形の四角形分割
             if new_nodes == 6:
