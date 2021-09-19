@@ -13,6 +13,7 @@ from SteraPyDialog import *
 
 
 def f_build_start():
+
     # リストの要素から値を取得する
     def f_ext_elem(ftr):
         # ftr = data
@@ -107,6 +108,8 @@ def f_build_start():
             print(cnt, "ベクトルAy", vect_ay)
             print(cnt, "ベクトルA", vector_a)
         else:  # cnt == 0
+            # vect_ax = cord2[new_nodes - 1][1] - cord2[0][1]
+            # vect_ay = cord2[new_nodes - 1][0] - cord2[0][0]
             vect_ax = cord2[vert - 1][1] - cord2[0][1]
             vect_ay = cord2[vert - 1][0] - cord2[0][0]
             vector_a = math.sqrt(vect_ax ** 2 + vect_ay ** 2)
@@ -175,7 +178,7 @@ def f_build_start():
         for j in range(vert):
             # 次の頂点までの距離を求める
             if j != (vert - 1):
-                nxt = j + 1
+                next = j + 1
                 # ベクトルAのX座標の差分
                 chk_vect_x = cord2[j + 1][1] - cord2[j][1]
                 # ベクトルAのY座標の差分
@@ -183,7 +186,7 @@ def f_build_start():
                 print(j, "ベクトルX", chk_vect_x)
                 print(j, "ベクトルY", chk_vect_y)
             else:
-                nxt = 0
+                next = 0
                 chk_vect_x = cord2[0][1] - cord2[j][1]
                 chk_vect_y = cord2[0][0] - cord2[j][0]
                 print(j, "ベクトルX", chk_vect_x)
@@ -192,12 +195,12 @@ def f_build_start():
             if abs(chk_vect_x) < 0.1 and abs(chk_vect_y) < 0.1:
                 if S[j] > 0:
                     del_nodes_lst.append(j)
-                elif S[nxt] > 0:
-                    del_nodes_lst.append(nxt)
+                elif S[next] > 0:
+                    del_nodes_lst.append(next)
                 else:
                     cord2[j][1] = cord2[j][1] + chk_vect_x / 2
                     cord2[j][0] = cord2[j][0] + chk_vect_y / 2
-                    del_nodes_lst.append(nxt)
+                    del_nodes_lst.append(next)
         print('削除するノード', del_nodes_lst)
 
         del_cnt = len(del_nodes_lst)
@@ -212,6 +215,7 @@ def f_build_start():
             for j in range(new_nodes):
                 print(j, 'X', cord2[j][0])
                 print(j, 'Y', cord2[j][1])
+        # Date210830 コーディングの目的が不明なためコメント化した．
         if new_nodes == 0:
             new_nodes = vert
         print('new_nodes=', new_nodes)
@@ -255,6 +259,8 @@ def f_build_start():
         # ベクトルAの長さ
         global vector
         vector = math.sqrt(vect_x ** 2 + vect_y ** 2)
+        # return vect_x
+        # return vect_y
         print("ベクトルx", vect_x)
         print("ベクトルy", vect_y)
         print("ベクトル", vector)
@@ -265,7 +271,9 @@ def f_build_start():
         x = sp.Symbol('x')
         global y
         y = sp.Symbol('y')
+        # expr1 = sp.Eq(y, 70*x)
         expr1 = sp.Eq(y, a1 * x + b1)
+        # expr2 = sp.Eq(y, 100*x-600)
         expr2 = sp.Eq(y, a2 * x + b2)
         global ans
         ans = sp.solve([expr1, expr2])
@@ -395,7 +403,7 @@ def f_build_start():
 
                 # 交差角度が制限範囲内でない場合は処理を中断する
                 if theta < 60 or theta > 120:
-                    pass
+                    continue
                     # 折れ曲がりの切妻屋根
                     # tsuma_line =
                     # yane_type =
@@ -430,7 +438,7 @@ def f_build_start():
 
                 # 交差角度が制限範囲内でない場合は処理を中断する
                 if theta < 60 or theta > 120:
-                    pass
+                    continue
                     # 折れ曲がりの切妻屋根
                     # tsuma_line =
                     # yane_type =
@@ -445,7 +453,7 @@ def f_build_start():
         # L点の座標
         print(cords[num][1])
         print(cords[num][0])
-        # 交点１までの距離
+       # 交点１までの距離
         div_line_a = math.sqrt((cords[num][1] - int_1st_x) ** 2 + (cords[num][0] - int_1st_y) ** 2)
         print("div_line_a=", div_line_a)
         # 交点２までの距離
@@ -536,8 +544,8 @@ def f_build_start():
             int_1st_x = int_x
             int_1st_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -564,8 +572,8 @@ def f_build_start():
             int_2nd_x = int_x
             int_2nd_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # 分割点はD1点（交点１）
@@ -644,8 +652,8 @@ def f_build_start():
             int_1st_x = int_x
             int_1st_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -672,8 +680,8 @@ def f_build_start():
             int_2nd_x = int_x
             int_2nd_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # 分割点はD1点（交点１）
@@ -752,8 +760,8 @@ def f_build_start():
             int_1a_x = int_x
             int_1a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -777,8 +785,8 @@ def f_build_start():
             int_1b_x = int_x
             int_1b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -804,8 +812,8 @@ def f_build_start():
             int_2a_x = int_x
             int_2a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -829,8 +837,8 @@ def f_build_start():
             int_2b_x = int_x
             int_2b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # L点から対向する二辺までの距離を比較する
@@ -839,19 +847,19 @@ def f_build_start():
             print(cords[num1][0])
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
-            print("div_line_1a=", div_line_1a)
+            print("div_line_a=", div_line_1a)
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
-            print("div_line_1b=", div_line_1b)
+            print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
-            print("div_line_2a=", div_line_2a)
+            print("div_line_a=", div_line_2a)
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
-            print("div_line_2b=", div_line_2b)
+            print("div_line_b=", div_line_2b)
 
             # 距離の短い方の線分を分割線とする
             if div_line_1a < div_line_1b:
@@ -1007,8 +1015,8 @@ def f_build_start():
             int_1a_x = int_x
             int_1a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1032,8 +1040,8 @@ def f_build_start():
             int_1b_x = int_x
             int_1b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -1059,8 +1067,8 @@ def f_build_start():
             int_2a_x = int_x
             int_2a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1084,8 +1092,8 @@ def f_build_start():
             int_2b_x = int_x
             int_2b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # L点から対向する二辺までの距離を比較する
@@ -1094,19 +1102,19 @@ def f_build_start():
             print(cords[num1][0])
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
-            print("div_line_1a=", div_line_1a)
+            print("div_line_a=", div_line_1a)
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
-            print("div_line_1b=", div_line_1b)
+            print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
-            print("div_line_2a=", div_line_2a)
+            print("div_line_a=", div_line_2a)
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
-            print("div_line_2b=", div_line_2b)
+            print("div_line_b=", div_line_2b)
 
             # 距離の短い方の線分を分割線とする
             if div_line_1a < div_line_1b:
@@ -1262,8 +1270,8 @@ def f_build_start():
             int_1a_x = int_x
             int_1a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1287,8 +1295,8 @@ def f_build_start():
             int_1b_x = int_x
             int_1b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -1314,8 +1322,8 @@ def f_build_start():
             int_2a_x = int_x
             int_2a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1339,8 +1347,8 @@ def f_build_start():
             int_2b_x = int_x
             int_2b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # L点から対向する二辺までの距離を比較する
@@ -1352,25 +1360,25 @@ def f_build_start():
                     taiko_cords_1a[0][1] > int_1a_x > taiko_cords_1a[1][1]):
                 # 交点1aまでの距離
                 div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
-                print("div_line_1a=", div_line_1a)
+                print("div_line_a=", div_line_1a)
             else:
                 f_inf = float('inf')
                 div_line_1a = f_inf
             # 交点1bまでの距離
             div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
-            print("div_line_1b=", div_line_1b)
+            print("div_line_b=", div_line_1b)
             # L2点の座標
             print(cords[num2][1])
             print(cords[num2][0])
             # 交点2aまでの距離
             div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
-            print("div_line_2a=", div_line_2a)
+            print("div_line_a=", div_line_2a)
             # 交点2bが L1-R1上にあるかチェックする
             if (taiko_cords_2b[0][1] < int_2b_x < taiko_cords_2b[1][1]) or (
                     taiko_cords_2b[0][1] > int_2b_x > taiko_cords_2b[1][1]):
                 # 交点2bまでの距離
                 div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
-                print("div_line_2b=", div_line_2b)
+                print("div_line_b=", div_line_2b)
             else:
                 f_inf = float('inf')
                 div_line_2b = f_inf
@@ -1529,8 +1537,8 @@ def f_build_start():
             int_1a_x = int_x
             int_1a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1554,8 +1562,8 @@ def f_build_start():
             int_1b_x = int_x
             int_1b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             num2 = order['L2']
@@ -1581,8 +1589,8 @@ def f_build_start():
             int_2a_x = int_x
             int_2a_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             # 直交する辺の座標ペア
@@ -1606,8 +1614,8 @@ def f_build_start():
             int_2b_x = int_x
             int_2b_y = int_y
             # 交差角度が制限範囲内でない場合は処理を中断する
-            if theta < 60 or theta > 120:
-                pass
+            # if theta < 60 or theta > 120:
+            #     continue
             # f_tri_mesh(cord2)
 
             # L点から対向する二辺までの距離を比較する
@@ -1616,13 +1624,13 @@ def f_build_start():
             print(cords[num1][0])
             # 交点1aまでの距離
             div_line_1a = math.sqrt((cords[num1][1] - int_1a_x) ** 2 + (cords[num1][0] - int_1a_y) ** 2)
-            print("div_line_1a=", div_line_1a)
+            print("div_line_b=", div_line_1a)
             # 交点1bが L2-R5上にあるかチェックする
             if (taiko_cords_1b[0][1] < int_1b_x < taiko_cords_1b[1][1]) or (
                     taiko_cords_1b[0][1] > int_1b_x > taiko_cords_1b[1][1]):
                 # 交点1bまでの距離
                 div_line_1b = math.sqrt((cords[num1][1] - int_1b_x) ** 2 + (cords[num1][0] - int_1b_y) ** 2)
-                print("div_line_1b=", div_line_1b)
+                print("div_line_a=", div_line_1b)
             else:
                 f_inf = float('inf')
                 div_line_1b = f_inf
@@ -1634,13 +1642,13 @@ def f_build_start():
                     taiko_cords_2a[0][1] > int_2a_x > taiko_cords_2a[1][1]):
                 # 交点2bまでの距離
                 div_line_2a = math.sqrt((cords[num2][1] - int_2a_x) ** 2 + (cords[num2][0] - int_2a_y) ** 2)
-                print("div_line_2a=", div_line_2a)
+                print("div_line_b=", div_line_2a)
             else:
                 f_inf = float('inf')
                 div_line_2a = f_inf
             # 交点2bまでの距離
             div_line_2b = math.sqrt((cords[num2][1] - int_2b_x) ** 2 + (cords[num2][0] - int_2b_y) ** 2)
-            print("div_line_2b=", div_line_2b)
+            print("div_line_a=", div_line_2b)
 
             # 距離の短い方の線分を分割線とする
             if div_line_1a < div_line_1b:
@@ -1781,720 +1789,125 @@ def f_build_start():
 
             num1 = order['L1']
             # １つ目の直交する辺は．L点と1つ前の点で結ばれる線分
-            # 直交する辺の座標ペア（分割線1a）
+            # 直交する辺の座標ペア
             if num1 == 0:
                 choku_cords_1ap = [cords[num1], cords[new_nodes - 1]]
             else:
                 choku_cords_1ap = [cords[num1], cords[num1 - 1]]
 
             # 頂点2-3の辺の座標ペア
-            # taiko_cords_1a1 = []
-            taiko_cords_1a_2_3 = []
+            taiko_cords_1a1 = []
             if (num1 + 2) > (new_nodes - 1):
-                taiko_cords_1a_2_3.append(cords[num1 + 2 - new_nodes])
+                taiko_cords_1a1.append(cords[num1 + 2 - new_nodes])
             else:
-                taiko_cords_1a_2_3.append(cords[num1 + 2])
+                taiko_cords_1a1.append(cords[num1 + 2])
             if (num1 + 3) > (new_nodes - 1):
-                taiko_cords_1a_2_3.append(cords[num1 + 3 - new_nodes])
+                taiko_cords_1a1.append(cords[num1 + 3 - new_nodes])
             else:
-                taiko_cords_1a_2_3.append(cords[num1 + 3])
+                taiko_cords_1a1.append(cords[num1 + 3])
             # 直交する直線1aと対向する辺との交点を求める
-            f_chokuko_check(choku_cords_1ap, taiko_cords_1a_2_3)
-            int1a_2_3x = int_x
-            int1a_2_3y = int_y
+            f_chokuko_check(choku_cords_1ap, taiko_cords_1a1)
+            int_1a_x = int_x
+            int_1a_y = int_y
             # 交差角度が制限範囲内かどうか確認する
             if 60 < theta < 120:
                 # 交点が対向する辺上にあるかチェックする
-                if (taiko_cords_1a_2_3[0][1] < int1a_2_3x < taiko_cords_1a_2_3[1][1]) or (
-                        taiko_cords_1a_2_3[0][1] > int1a_2_3x > taiko_cords_1a_2_3[1][1]):
+                if (taiko_cords_1a1[0][1] < int_1a_x < taiko_cords_1a1[1][1]) or (
+                        taiko_cords_1a1[0][1] > int_1a_x > taiko_cords_1a1[1][1]):
                     # L1点から２つ目-３つ目の辺の直交対向条件を満たす
                     flag_edge_2_3 = True
                     print('flag_edge_2_3', flag_edge_2_3)
-                else:
-                    pass
-            # 交点1a_2_3までの距離
-            div_line_1a_2_3 = math.sqrt((cords[num1][1] - int1a_2_3x) ** 2 + (cords[num1][0] - int1a_2_3y) ** 2)
-            print("div_line_1a_2_3=", div_line_1a_2_3)
 
             # 頂点4-5の辺の座標ペア
-            # taiko_cords_1a3 = []
-            taiko_cords_1a_4_5 = []
+            taiko_cords_1a3 = []
             if (num1 + 4) > (new_nodes - 1):
-                taiko_cords_1a_4_5.append(cords[num1 + 4 - new_nodes])
+                taiko_cords_1a3.append(cords[num1 + 4 - new_nodes])
             else:
-                taiko_cords_1a_4_5.append(cords[num1 + 4])
+                taiko_cords_1a3.append(cords[num1 + 4])
             if (num1 + 5) > (new_nodes - 1):
-                taiko_cords_1a_4_5.append(cords[num1 + 5 - new_nodes])
+                taiko_cords_1a3.append(cords[num1 + 5 - new_nodes])
             else:
-                taiko_cords_1a_4_5.append(cords[num1 + 5])
+                taiko_cords_1a3.append(cords[num1 + 5])
             # 直交する直線1aと対向する辺との交点を求める
-            f_chokuko_check(choku_cords_1ap, taiko_cords_1a_4_5)
-            int1a_4_5x = int_x
-            int1a_4_5y = int_y
+            f_chokuko_check(choku_cords_1ap, taiko_cords_1a3)
+            int_1a_x = int_x
+            int_1a_y = int_y
             # 交差角度が制限範囲内かどうか確認する
             if 60 < theta < 120:
                 # 交点が対向する辺上にあるかチェックする
-                if (taiko_cords_1a_4_5[0][1] < int1a_4_5x < taiko_cords_1a_4_5[1][1]) or (
-                        taiko_cords_1a_4_5[0][1] > int1a_4_5x > taiko_cords_1a_4_5[1][1]):
-                    # L1点から４つ目-５つ目の辺の直交対向条件を満たす
+                if (taiko_cords_1a3[0][1] < int_1a_x < taiko_cords_1a3[1][1]) or (
+                        taiko_cords_1a3[0][1] > int_1a_x > taiko_cords_1a3[1][1]):
+                    # L1点から２つ目-３つ目の辺の直交対向条件を満たす
                     flag_edge_4_5 = True
                     print('flag_edge_4_5', flag_edge_4_5)
-                else:
-                    pass
-            # 交点1a_4_5までの距離
-            div_line_1a_4_5 = math.sqrt((cords[num1][1] - int1a_4_5x) ** 2 + (cords[num1][0] - int1a_4_5y) ** 2)
-            print("div_line_1a_4_5=", div_line_1a_4_5)
 
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
-            # 直交する辺の座標ペア（分割線1b）
+            # 直交する辺の座標ペア
             if num1 == (new_nodes - 1):
-                choku_cords_1bn = [cords[num1], cords[0]]
+                choku_cords_1an = [cords[num1], cords[0]]
             else:
-                choku_cords_1bn = [cords[num1], cords[num1 + 1]]
+                choku_cords_1an = [cords[num1], cords[num1 + 1]]
 
             # 頂点3-4の辺の座標ペア
-            # taiko_cords_1a2 = []
-            taiko_cords_1b_3_4 = []
+            taiko_cords_1a2 = []
             if (num1 + 3) > (new_nodes - 1):
-                taiko_cords_1b_3_4.append(cords[num1 + 3 - new_nodes])
+                taiko_cords_1a2.append(cords[num1 + 3 - new_nodes])
             else:
-                taiko_cords_1b_3_4.append(cords[num1 + 3])
+                taiko_cords_1a2.append(cords[num1 + 3])
             if (num1 + 4) > (new_nodes - 1):
-                taiko_cords_1b_3_4.append(cords[num1 + 4 - new_nodes])
+                taiko_cords_1a2.append(cords[num1 + 4 - new_nodes])
             else:
-                taiko_cords_1b_3_4.append(cords[num1 + 4])
-            # 直交する直線1bと対向する辺との交点を求める
-            f_chokuko_check(choku_cords_1bn, taiko_cords_1b_3_4)
-            int1b_3_4x = int_x
-            int1b_3_4y = int_y
+                taiko_cords_1a2.append(cords[num1 + 4])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1an, taiko_cords_1a2)
+            int_1a_x = int_x
+            int_1a_y = int_y
             # 交差角度が制限範囲内かどうか確認する
             if 60 < theta < 120:
                 # 交点が対向する辺上にあるかチェックする
-                if (taiko_cords_1b_3_4[0][1] < int1b_3_4x < taiko_cords_1b_3_4[1][1]) or (
-                        taiko_cords_1b_3_4[0][1] > int1b_3_4x > taiko_cords_1b_3_4[1][1]):
+                if (taiko_cords_1a2[0][1] < int_1a_x < taiko_cords_1a2[1][1]) or (
+                        taiko_cords_1a2[0][1] > int_1a_x > taiko_cords_1a2[1][1]):
                     # L1点から２つ目-３つ目の辺の直交対向条件を満たす
                     flag_edge_3_4 = True
                     print('flag_edge_3_4', flag_edge_3_4)
-                else:
-                    pass
-            # 交点1b_3_4までの距離
-            div_line_1b_3_4 = math.sqrt((cords[num1][1] - int1b_3_4x) ** 2 + (cords[num1][0] - int1b_3_4y) ** 2)
-            print("div_line_1a_3_4=", div_line_1b_3_4)
 
             # 頂点5-6の辺の座標ペア
-            # taiko_cords_1a4 = []
-            taiko_cords_1b_5_6 = []
+            taiko_cords_1a4 = []
             if (num1 + 5) > (new_nodes - 1):
-                taiko_cords_1b_5_6.append(cords[num1 + 5 - new_nodes])
+                taiko_cords_1a4.append(cords[num1 + 5 - new_nodes])
             else:
-                taiko_cords_1b_5_6.append(cords[num1 + 5])
+                taiko_cords_1a4.append(cords[num1 + 5])
             if (num1 + 6) > (new_nodes - 1):
-                taiko_cords_1b_5_6.append(cords[num1 + 6 - new_nodes])
+                taiko_cords_1a4.append(cords[num1 + 6 - new_nodes])
             else:
-                taiko_cords_1b_5_6.append(cords[num1 + 6])
-            # 直交する直線1bと対向する辺との交点を求める
-            f_chokuko_check(choku_cords_1bn, taiko_cords_1b_5_6)
-            int1b_5_6x = int_x
-            int1b_5_6y = int_y
+                taiko_cords_1a4.append(cords[num1 + 6])
+            # 直交する直線1aと対向する辺との交点を求める
+            f_chokuko_check(choku_cords_1an, taiko_cords_1a4)
+            int_1a_x = int_x
+            int_1a_y = int_y
             # 交差角度が制限範囲内かどうか確認する
             if 60 < theta < 120:
                 # 交点が対向する辺上にあるかチェックする
-                if (taiko_cords_1b_5_6[0][1] < int1b_5_6x < taiko_cords_1b_5_6[1][1]) or (
-                        taiko_cords_1b_5_6[0][1] > int1b_5_6x > taiko_cords_1b_5_6[1][1]):
+                if (taiko_cords_1a4[0][1] < int_1a_x < taiko_cords_1a4[1][1]) or (
+                        taiko_cords_1a4[0][1] > int_1a_x > taiko_cords_1a4[1][1]):
                     # L1点から２つ目-３つ目の辺の直交対向条件を満たす
                     flag_edge_5_6 = True
                     print('flag_edge_5_6', flag_edge_5_6)
-                else:
-                    pass
-            # 交点1b_5_6までの距離
-            div_line_1b_5_6 = math.sqrt((cords[num1][1] - int1b_5_6x) ** 2 + (cords[num1][0] - int1b_5_6y) ** 2)
-            print("div_line_1a_5_6=", div_line_1b_5_6)
-
-            # L2点からの分割線による対向する辺との交点までの距離を求める
-            num2 = order['L2']
 
             # 対抗する辺との直交条件から型分類を行う
             if flag_edge_2_3 == True and flag_edge_5_6 == True:
                 oct_s_type = 'Rotation_S'
                 print(oct_s_type)
-
-                # L2点と対向する辺との交点を求める
-                # １つ目の直交する辺は．L点と1つ前の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2a）
-                if num2 == 0:
-                    choku_cords_2ap = [cords[num2], cords[new_nodes - 1]]
-                else:
-                    choku_cords_2ap = [cords[num2], cords[num2 - 1]]
-
-                # 頂点2-3の辺の座標ペア
-                taiko_cords_2a_2_3 = []
-                if (num2 + 2) > (new_nodes - 1):
-                    taiko_cords_2a_2_3.append(cords[num2 + 2 - new_nodes])
-                else:
-                    taiko_cords_2a_2_3.append(cords[num2 + 2])
-                if (num2 + 3) > (new_nodes - 1):
-                    taiko_cords_2a_2_3.append(cords[num2 + 3 - new_nodes])
-                else:
-                    taiko_cords_2a_2_3.append(cords[num2 + 3])
-                # 直交する直線2aと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2ap, taiko_cords_2a_2_3)
-                int2a_2_3x = int_x
-                int2a_2_3y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2a_2_3[0][1] < int2a_2_3x < taiko_cords_2a_2_3[1][1]) or (
-                            taiko_cords_2a_2_3[0][1] > int2a_2_3x > taiko_cords_2a_2_3[1][1]):
-                        # 交点2a_2_3までの距離
-                        div_line_2a_2_3 = math.sqrt(
-                            (cords[num2][1] - int2a_2_3x) ** 2 + (cords[num2][0] - int2a_2_3y) ** 2)
-                        print("div_line_2a_2_3=", div_line_2a_2_3)
-                    else:
-                        pass
-
-                # もう一方の直交する辺は．L点と次の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2b）
-                if num2 == (new_nodes - 1):
-                    choku_cords_2bn = [cords[num2], cords[0]]
-                else:
-                    choku_cords_2bn = [cords[num2], cords[num2 + 1]]
-
-                # 頂点5-6の辺の座標ペア
-                taiko_cords_2b_5_6 = []
-                if (num2 + 5) > (new_nodes - 1):
-                    taiko_cords_2b_5_6.append(cords[num2 + 5 - new_nodes])
-                else:
-                    taiko_cords_2b_5_6.append(cords[num2 + 5])
-                if (num2 + 6) > (new_nodes - 1):
-                    taiko_cords_2b_5_6.append(cords[num2 + 6 - new_nodes])
-                else:
-                    taiko_cords_2b_5_6.append(cords[num2 + 6])
-                # 直交する直線2bと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2bn, taiko_cords_2b_5_6)
-                int2b_5_6x = int_x
-                int2b_5_6y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2b_5_6[0][1] < int2b_5_6x < taiko_cords_2b_5_6[1][1]) or (
-                            taiko_cords_2b_5_6[0][1] > int2b_5_6x > taiko_cords_2b_5_6[1][1]):
-                        # 交点2b_5_6までの距離
-                        div_line_2b_5_6 = math.sqrt(
-                            (cords[num2][1] - int2b_5_6x) ** 2 + (cords[num2][0] - int2b_5_6y) ** 2)
-                        print("div_line_2b_5_6=", div_line_2b_5_6)
-                    else:
-                        pass
-
-                # 分割線の長さの比較（並び替え）
-                div_line_dic = {'D_1a_2_3': div_line_1a_2_3, 'D_1b_5_6': div_line_1b_5_6, 'D_2a_2_3': div_line_2a_2_3,
-                                'D_2b_5_6': div_line_2b_5_6}
-                div_line_sort = sorted(div_line_dic.items(), key=lambda x: x[1])
-                print("分割線の長さの短い順", div_line_sort)
-                min_div_line = sorted(div_line_dic.items(), key=lambda x: x[1])[0:1]
-                # D_1a_2_3が最短の分割線
-                if min_div_line[0][0] == 'D_1a_2_3':
-                    # 分割線は1a
-                    print(min_div_line[0][0])
-                    # 分割点はD1a点
-                    d1a = [int1a_2_3y, int1a_2_3x]
-                    # 座標値のリストにD1a点の座標値を追加する
-                    cords.extend([d1a])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1a_num = new_nodes + 1
-                    order['D1a'] = d1a_num
-                    print('line_1a', order)
-
-                    # 四角形L1-R1-R2-D1a
-                    rect_1_name = ['L1', 'R1', 'R2', 'D1a']
-                    # ６角形D1a-R3-L2-R4-R5-R6
-                    hex_1_name = ['D1a', 'R3', 'L2', 'R4', 'R5', 'R6']
-
-                # D_1b_5_6が最短の分割線
-                elif min_div_line[0][0] == 'D_1b_5_6':
-                    # 分割線は1b
-                    print(min_div_line[0][0])
-                    # 分割点はD1b点
-                    d1b = [int1b_5_6y, int1b_5_6x]
-                    # 座標値のリストにD1b点の座標値を追加する
-                    cords.extend([d1b])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1b_num = new_nodes + 1
-                    order['D1b'] = d1b_num
-                    print('line_1b', order)
-
-                    # 四角形L1-D1b-R5-R6
-                    rect_1_name = ['L1', 'D1b', 'R5', 'R6']
-                    # ６角形R1-R2-R3-L2-R4-D1b
-                    hex_1_name = ['R1', 'R2', 'R3', 'L2', 'R4', 'D1b']
-
-                # D_2a_2_3が最短の分割線
-                if min_div_line[0][0] == 'D_2a_2_3':
-                    # 分割線は2a
-                    print(min_div_line[0][0])
-                    # 分割点はD2a点
-                    d2a = [int2a_2_3y, int2a_2_3x]
-                    # 座標値のリストにD1a点の座標値を追加する
-                    cords.extend([d2a])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1a_num = new_nodes + 1
-                    order['D2a'] = d1a_num
-                    print('line_2a', order)
-
-                    # 四角形L2-R4-R5-D2a
-                    rect_1_name = ['L2', 'R4', 'R5', 'D2a']
-                    # ６角形L1-R1-R2-R3-D2a-R6
-                    hex_1_name = ['L1', 'R1', 'R2', 'R3', 'D2a', 'R6']
-
-                # D_2b_5_6が最短の分割線
-                elif min_div_line[0][0] == 'D_2b_5_6':
-                    # 分割線は2b
-                    print(min_div_line[0][0])
-                    # 分割点はD2b点
-                    d2b = [int1b_5_6y, int1b_5_6x]
-                    # 座標値のリストにD1b点の座標値を追加する
-                    cords.extend([d2b])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1b_num = new_nodes + 1
-                    order['D2b'] = d1b_num
-                    print('line_2b', order)
-
-                    # 四角形L2-D2b-R2-R3
-                    rect_1_name = ['L2', 'D2b', 'R2', 'R3']
-                    # ６角形R1-D2b-R4-R5-R6-L1
-                    hex_1_name = ['R1', 'D2b', 'R4', 'R5', 'R6', 'L1']
-
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_1_list = []
-                for name in rect_1_name:
-                    n = order[name]
-                    rect_1_list.append(cords[n])
-                print(rect_1_list)
-                # tsuma_line =
-                # yane_type =
-                # f_make_roof(rect_1_list, tsuma_line, yane_type)
-                hex_1_list = []
-                for name in hex_1_name:
-                    n = order[name]
-                    hex_1_list.append(cords[n])
-                print(hex_1_list)
-                # hexagonal_divider(hex_1_list)
-
             elif flag_edge_2_3 == True and flag_edge_3_4 == True:
                 oct_s_type = 'typeA_S'
                 print(oct_s_type)
-
-                # L2点と対向する辺との交点を求める
-                # １つ目の直交する辺は．L点と1つ前の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2a）
-                if num2 == 0:
-                    choku_cords_2ap = [cords[num2], cords[new_nodes - 1]]
-                else:
-                    choku_cords_2ap = [cords[num2], cords[num2 - 1]]
-
-                # 頂点2-3の辺の座標ペア
-                taiko_cords_2a_2_3 = []
-                if (num2 + 2) > (new_nodes - 1):
-                    taiko_cords_2a_2_3.append(cords[num2 + 2 - new_nodes])
-                else:
-                    taiko_cords_2a_2_3.append(cords[num2 + 2])
-                if (num2 + 3) > (new_nodes - 1):
-                    taiko_cords_2a_2_3.append(cords[num2 + 3 - new_nodes])
-                else:
-                    taiko_cords_2a_2_3.append(cords[num2 + 3])
-                # 直交する直線2aと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2ap, taiko_cords_2a_2_3)
-                int2a_2_3x = int_x
-                int2a_2_3y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2a_2_3[0][1] < int2a_2_3x < taiko_cords_2a_2_3[1][1]) or (
-                            taiko_cords_2a_2_3[0][1] > int2a_2_3x > taiko_cords_2a_2_3[1][1]):
-                        # 交点2a_2_3までの距離
-                        div_line_2a_2_3 = math.sqrt(
-                            (cords[num2][1] - int2a_2_3x) ** 2 + (cords[num2][0] - int2a_2_3y) ** 2)
-                        print("div_line_2a_2_3=", div_line_2a_2_3)
-                    else:
-                        pass
-
-                # もう一方の直交する辺は．L点と次の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2b）
-                if num2 == (new_nodes - 1):
-                    choku_cords_2bn = [cords[num2], cords[0]]
-                else:
-                    choku_cords_2bn = [cords[num2], cords[num2 + 1]]
-
-                # 頂点3-4の辺の座標ペア
-                taiko_cords_2b_3_4 = []
-                if (num2 + 3) > (new_nodes - 1):
-                    taiko_cords_2b_3_4.append(cords[num2 + 3 - new_nodes])
-                else:
-                    taiko_cords_2b_3_4.append(cords[num2 + 3])
-                if (num2 + 4) > (new_nodes - 1):
-                    taiko_cords_2b_3_4.append(cords[num2 + 4 - new_nodes])
-                else:
-                    taiko_cords_2b_3_4.append(cords[num2 + 4])
-                # 直交する直線2bと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2bn, taiko_cords_2b_3_4)
-                int2b_3_4x = int_x
-                int2b_3_4y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2b_3_4[0][1] < int2b_3_4x < taiko_cords_2b_3_4[1][1]) or (
-                            taiko_cords_2b_3_4[0][1] > int2b_3_4x > taiko_cords_2b_3_4[1][1]):
-                        # 交点2b_5_6までの距離
-                        div_line_2b_5_6 = math.sqrt(
-                            (cords[num2][1] - int2b_3_4x) ** 2 + (cords[num2][0] - int2b_3_4y) ** 2)
-                        print("div_line_2b_5_6=", div_line_2b_5_6)
-                    else:
-                        pass
-
-                div_line_2a_2_3 = math.sqrt((cords[num2][1] - int2a_2_3x) ** 2 + (cords[num2][0] - int2a_2_3y) ** 2)
-                div_line_2b_3_4 = math.sqrt((cords[num2][1] - int2b_3_4x) ** 2 + (cords[num2][0] - int2b_3_4y) ** 2)
-
-                # 分割線1aと1bを比較する，分割線2aと2bを比較する
-                # 距離の短い方の線分を分割線とする
-                if div_line_1a_2_3 < div_line_1b_3_4:
-                    print("分割線はdiv_line_1a")
-                    # 分割点はD1a点（交点１）
-                    d1a = [int1a_2_3y, int1a_2_3x]
-                    # 座標値のリストにD1a点の座標値を追加する
-                    cords.extend([d1a])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1a_num = new_nodes + 1
-                    order['D1a'] = d1a_num
-                    print('line_1a', order)
-
-                    # 四角形L1-R1-R2-D1a
-                    rect_1_name = ['L1', 'R1', 'R2', 'D1a']
-
-                    # 距離の短い方の線分を分割線とする
-                    if div_line_2a_2_3 < div_line_2b_3_4:
-                        print("分割線はdiv_line_2a")
-                        # 分割点はD2a点（交点２）
-                        d2a = [int2a_2_3y, int2a_2_3x]
-                        # 座標値のリストにD2a点の座標値を追加する
-                        cords.extend([d2a])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2a_num = new_nodes + 2
-                        order['D2a'] = d2a_num
-                        print('line_2a', order)
-
-                        # 四角形D1a-R3-D2a-R6
-                        rect_2_name = ['D1a', 'R3', 'D2a', 'R6']
-                        # 四角形L2-R4-R5-D2a
-                        rect_3_name = ['L2', 'R4', 'R5', 'D2a']
-
-                    elif div_line_2a_2_3 > div_line_2b_3_4:
-                        print("分割線はdiv_line_b")
-                        # 分割点はD2b点（交点２）
-                        d2b = [int2b_3_4y, int2b_3_4x]
-                        # 座標値のリストにD2b点の座標値を追加する
-                        cords.extend([d2b])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2b_num = new_nodes + 2
-                        order['D2b'] = d2b_num
-                        print('line_2b', order)
-
-                        # 四角形D1a-R3-L2-D2b
-                        rect_2_name = ['D1a', 'R3', 'L2', 'D2b']
-                        # 四角形D2b-R4-R5-R6
-                        rect_3_name = ['D2b', 'R4', 'R5', 'R6']
-
-                elif div_line_1a_2_3 > div_line_1b_3_4:
-                    print("分割線はdiv_line_1b")
-                    # 分割点はD1b点（交点２）
-                    d1b = [int1b_3_4y, int1b_3_4x]
-                    # 座標値のリストにD1b点の座標値を追加する
-                    cords.extend([d1b])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1b_num = new_nodes + 1
-                    order['D1b'] = d1b_num
-                    print('line_1b', order)
-
-                    # 四角形R1-R2-R3-D1b
-                    rect_1_name = ['R1', 'R2', 'R3', 'D1b']
-
-                    # 距離の短い方の線分を分割線とする
-                    if div_line_2a_2_3 < div_line_2b_3_4:
-                        print("分割線はdiv_line_2a")
-                        # 分割点はD2a点（交点２）
-                        d2a = [int2a_2_3y, int2a_2_3x]
-                        # 座標値のリストにD2a点の座標値を追加する
-                        cords.extend([d2a])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2a_num = new_nodes + 2
-                        order['D2a'] = d2a_num
-                        print('line_2a', order)
-
-                        # 四角形L1-D1b-D2a-R6
-                        rect_2_name = ['L1', 'D1b', 'D2a', 'R6']
-                        # 四角形L2-R4-R5-D2a
-                        rect_3_name = ['L2', 'R4', 'R5', 'D2a']
-
-                    elif div_line_2a_2_3 > div_line_2b_3_4:
-                        print("分割線はdiv_line_b")
-                        # 分割点はD2b点（交点２）
-                        d2b = [int2b_3_4y, int2b_3_4x]
-                        # 座標値のリストにD2b点の座標値を追加する
-                        cords.extend([d2b])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2b_num = new_nodes + 2
-                        order['D2b'] = d2b_num
-                        print('line_2b', order)
-
-                        # 四角形L1-D1b-L2-D2b
-                        rect_2_name = ['L1', 'D1b', 'L2', 'D2b']
-                        # 四角形D2b-R4-R5-R6
-                        rect_3_name = ['D2b', 'R4', 'R5', 'R6']
-
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_1_list = []
-                for name in rect_1_name:
-                    n = order[name]
-                    rect_1_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
-                print(rect_1_list)
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_2_list = []
-                for name in rect_2_name:
-                    n = order[name]
-                    rect_2_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_2_list, tsuma_line, yane_type)
-                print(rect_2_list)
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_3_list = []
-                for name in rect_3_name:
-                    n = order[name]
-                    rect_3_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_3_list, tsuma_line, yane_type)
-                print(rect_3_list)
-
             elif flag_edge_4_5 == True and flag_edge_5_6 == True:
                 oct_s_type = 'typeB_S'
                 print(oct_s_type)
-
-                # L2点と対向する辺との交点を求める
-                # １つ目の直交する辺は．L点と1つ前の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2a）
-                if num2 == 0:
-                    choku_cords_2ap = [cords[num2], cords[new_nodes - 1]]
-                else:
-                    choku_cords_2ap = [cords[num2], cords[num2 - 1]]
-
-                # 頂点4-5の辺の座標ペア
-                taiko_cords_2a_4_5 = []
-                if (num2 + 4) > (new_nodes - 1):
-                    taiko_cords_2a_4_5.append(cords[num2 + 4 - new_nodes])
-                else:
-                    taiko_cords_2a_4_5.append(cords[num2 + 4])
-                if (num2 + 5) > (new_nodes - 1):
-                    taiko_cords_2a_4_5.append(cords[num2 + 5 - new_nodes])
-                else:
-                    taiko_cords_2a_4_5.append(cords[num2 + 5])
-                # 直交する直線2aと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2ap, taiko_cords_2a_4_5)
-                int2a_4_5x = int_x
-                int2a_4_5y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2a_4_5[0][1] < int2a_4_5x < taiko_cords_2a_4_5[1][1]) or (
-                            taiko_cords_2a_4_5[0][1] > int2a_4_5x > taiko_cords_2a_4_5[1][1]):
-                        # 交点2a_4_5までの距離
-                        div_line_2a_4_5 = math.sqrt(
-                            (cords[num2][1] - int2a_4_5x) ** 2 + (cords[num2][0] - int2a_4_5y) ** 2)
-                        print("div_line_2a_4_5=", div_line_2a_4_5)
-                    else:
-                        pass
-
-                # もう一方の直交する辺は．L点と次の点で結ばれる線分
-                # 直交する辺の座標ペア（分割線2b）
-                if num2 == (new_nodes - 1):
-                    choku_cords_2bn = [cords[num2], cords[0]]
-                else:
-                    choku_cords_2bn = [cords[num2], cords[num2 + 1]]
-
-                # 頂点5-6の辺の座標ペア
-                taiko_cords_2b_5_6 = []
-                if (num2 + 5) > (new_nodes - 1):
-                    taiko_cords_2b_5_6.append(cords[num2 + 5 - new_nodes])
-                else:
-                    taiko_cords_2b_5_6.append(cords[num2 + 5])
-                if (num2 + 6) > (new_nodes - 1):
-                    taiko_cords_2b_5_6.append(cords[num2 + 6 - new_nodes])
-                else:
-                    taiko_cords_2b_5_6.append(cords[num2 + 6])
-                # 直交する直線2bと対向する辺との交点を求める
-                f_chokuko_check(choku_cords_2bn, taiko_cords_2b_5_6)
-                int2b_5_6x = int_x
-                int2b_5_6y = int_y
-                # 交差角度が制限範囲内かどうか確認する
-                if 60 < theta < 120:
-                    # 交点が対向する辺上にあるかチェックする
-                    if (taiko_cords_2b_5_6[0][1] < int2b_5_6x < taiko_cords_2b_5_6[1][1]) or (
-                            taiko_cords_2b_5_6[0][1] > int2b_5_6x > taiko_cords_2b_5_6[1][1]):
-                        # 交点2b_5_6までの距離
-                        div_line_2b_5_6 = math.sqrt(
-                            (cords[num2][1] - int2b_5_6x) ** 2 + (cords[num2][0] - int2b_5_6y) ** 2)
-                        print("div_line_2b_5_6=", div_line_2b_5_6)
-                    else:
-                        pass
-
-                div_line_2a_4_5 = math.sqrt((cords[num2][1] - int2a_4_5x) ** 2 + (cords[num2][0] - int2a_4_5y) ** 2)
-                div_line_2b_5_6 = math.sqrt((cords[num2][1] - int2b_5_6x) ** 2 + (cords[num2][0] - int2b_5_6y) ** 2)
-
-                # 分割線1aと1bを比較する，分割線2aと2bを比較する
-                # 距離の短い方の線分を分割線とする
-                if div_line_1a_4_5 < div_line_1b_5_6:
-                    print("分割線はdiv_line_1a")
-                    # 分割点はD1a点（交点１）
-                    d1a = [int1a_4_5y, int1a_4_5x]
-                    # 座標値のリストにD1a点の座標値を追加する
-                    cords.extend([d1a])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1a_num = new_nodes + 1
-                    order['D1a'] = d1a_num
-                    print('line_1a', order)
-
-                    # 四角形D1a-R4-R5-R6
-                    rect_1_name = ['D1a', 'R4', 'R5', 'R6']
-
-                    # 距離の短い方の線分を分割線とする
-                    if div_line_2a_4_5 < div_line_2b_5_6:
-                        print("分割線はdiv_line_2a")
-                        # 分割点はD2a点（交点２）
-                        d2a = [int2a_4_5y, int2a_4_5x]
-                        # 座標値のリストにD2a点の座標値を追加する
-                        cords.extend([d2a])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2a_num = new_nodes + 2
-                        order['D2a'] = d2a_num
-                        print('line_2a', order)
-
-                        # 四角形D1a-L1-D2a-L2
-                        rect_2_name = ['D1a', 'L1', 'D2a', 'L2']
-                        # 四角形R1-R2-R3-D2a
-                        rect_3_name = ['R1', 'R2', 'R3', 'D2a']
-
-                    elif div_line_2a_4_5 > div_line_2b_5_6:
-                        print("分割線はdiv_line_b")
-                        # 分割点はD2b点（交点２）
-                        d2b = [int2b_5_6y, int2b_5_6x]
-                        # 座標値のリストにD2b点の座標値を追加する
-                        cords.extend([d2b])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2b_num = new_nodes + 2
-                        order['D2b'] = d2b_num
-                        print('line_2b', order)
-
-                        # 四角形R2-R3-L2-D2b
-                        rect_2_name = ['R2', 'R3', 'L2', 'D2b']
-                        # 四角形R1-D2b-D1a-L1
-                        rect_3_name = ['R1', 'D2b', 'D1a', 'L1']
-
-                elif div_line_1a_4_5 > div_line_1b_5_6:
-                    print("分割線はdiv_line_1b")
-                    # 分割点はD1b点（交点２）
-                    d1b = [int1b_5_6y, int1b_5_6x]
-                    # 座標値のリストにD1b点の座標値を追加する
-                    cords.extend([d1b])
-                    print(cords)
-                    # 頂点並びの辞書に分割点を追加する
-                    d1b_num = new_nodes + 1
-                    order['D1b'] = d1b_num
-                    print('line_1b', order)
-
-                    # 四角形L1-D1b-R5-R6
-                    rect_1_name = ['L1', 'D1b', 'R5', 'R6']
-
-                    # 距離の短い方の線分を分割線とする
-                    if div_line_2a_4_5 < div_line_2b_5_6:
-                        print("分割線はdiv_line_2a")
-                        # 分割点はD2a点（交点２）
-                        d2a = [int2a_4_5y, int2a_4_5x]
-                        # 座標値のリストにD2a点の座標値を追加する
-                        cords.extend([d2a])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2a_num = new_nodes + 2
-                        order['D2a'] = d2a_num
-                        print('line_2a', order)
-
-                        # 四角形D1b-D2a-L2-R4
-                        rect_2_name = ['D1b', 'D2a', 'L2', 'R4']
-                        # 四角形R1-R2-R3-D2a
-                        rect_3_name = ['R1', 'R2', 'R3', 'D2a']
-
-                    elif div_line_2a_4_5 > div_line_2b_5_6:
-                        print("分割線はdiv_line_b")
-                        # 分割点はD2b点（交点２）
-                        d2b = [int2b_5_6y, int2b_5_6x]
-                        # 座標値のリストにD2b点の座標値を追加する
-                        cords.extend([d2b])
-                        print(cords)
-                        # 頂点並びの辞書に分割点を追加する
-                        d2b_num = new_nodes + 2
-                        order['D2b'] = d2b_num
-                        print('line_2b', order)
-
-                        # 四角形R1-D2b-R4-D1b
-                        rect_2_name = ['R1', 'D2b', 'R4', 'D1b']
-                        # 四角形R2-R3-L2-D2b
-                        rect_3_name = ['R2', 'R3', 'L2', 'D2b']
-
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_1_list = []
-                for name in rect_1_name:
-                    n = order[name]
-                    rect_1_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
-                print(rect_1_list)
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_2_list = []
-                for name in rect_2_name:
-                    n = order[name]
-                    rect_2_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_2_list, tsuma_line, yane_type)
-                print(rect_2_list)
-                # 辞書の中味に従ってリストの座標データで四角形を作る
-                rect_3_list = []
-                for name in rect_3_name:
-                    n = order[name]
-                    rect_3_list.append(cords[n])
-                    # tsuma_line =
-                    # yane_type =
-                    # f_make_roof(rect_3_list, tsuma_line, yane_type)
-                print(rect_3_list)
-
             else:
                 oct_s_type = 'Others：陸屋根'
                 print(oct_s_type)
-                pass
+            #     continue
             #     f_tri_mesh(cord2)
 
         print(oct_type)
