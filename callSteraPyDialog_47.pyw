@@ -356,23 +356,156 @@ def f_build_start():
             arr_lr_p.append(ini)
         print(arr_lr_p)
 
-    # 10角形を１つの四角形と１つの8角形に分割する
-    def decagon_divider(cords):
-        if arr_lr_p[0] != 'L':
-            pass
-        elif arr_lr_p[new_nodes - 1 ] == 'R' and arr_lr_p[new_nodes - 2 ] == 'R' and arr_lr_p[1] == 'R' and arr_lr_p[2] == 'R':
-            print('R-R-L-R-R'+'index=', 0)
-        elif arr_lr_p[1] == 'R' and arr_lr_p[2] == 'R' and arr_lr_p[3] == 'L' and arr_lr_p[4] == 'R' and arr_lr_p[5] == 'R':
-            print('R-R-L-R-R'+'index=', 3)
-        elif arr_lr_p[2] == 'R' and arr_lr_p[3] == 'R' and arr_lr_p[4] == 'L' and arr_lr_p[5] == 'R' and arr_lr_p[6] == 'R':
-            print('R-R-L-R-R'+'index=', 4)
-        elif arr_lr_p[3] == 'R' and arr_lr_p[4] == 'R' and arr_lr_p[5] == 'L' and arr_lr_p[6] == 'R' and arr_lr_p[7] == 'R':
-            print('R-R-L-R-R'+'index=', 5)
-        elif arr_lr_p[4] == 'R' and arr_lr_p[5] == 'R' and arr_lr_p[6] == 'L' and arr_lr_p[7] == 'R' and arr_lr_p[8] == 'R':
-            print('R-R-L-R-R'+'index=', 6)
-        elif arr_lr_p[5] == 'R' and arr_lr_p[6] == 'R' and arr_lr_p[7] == 'L' and arr_lr_p[8] == 'R' and arr_lr_p[9] == 'R':
-            print('R-R-L-R-R'+'index=', 7)
+    # 6角形を2つに四角形分割する
+    def hexagonal_divider(cords):
+        # L点の直交条件．対向する辺との交点の角度制限を確認する．
+        for LR_key in order:
+            if LR_key == 'L1':
+                print(LR_key)
+                num = order[LR_key]
+                # print(num)
 
+                # 直交する辺は．L点と1つ前の点で結ばれる線分
+                # 直交する辺の座標ペア
+                if num == 0:
+                    choku_cords_1 = [cords[num], cords[new_nodes - 1]]
+                else:
+                    choku_cords_1 = [cords[num], cords[num - 1]]
+
+                # 対向する辺は，L点から２つ目と３つ目の点で結ばれる線分
+                # 対向する辺の座標ペア
+                # hen_coprds = [[] for _ in range(hen_cnt)]
+                taiko_cords_1 = []
+                if (num + 2) > (new_nodes - 1):
+                    taiko_cords_1.append(cords[num + 2 - new_nodes])
+                else:
+                    taiko_cords_1.append(cords[num + 2])
+                if (num + 3) > (new_nodes - 1):
+                    taiko_cords_1.append(cords[num + 3 - new_nodes])
+                else:
+                    taiko_cords_1.append(cords[num + 3])
+
+                print("choku_cords_1", choku_cords_1)
+                print("taiko_cords_1", taiko_cords_1)
+
+                # 直交する直線aと対向する辺との直交条件を確認する
+                f_chokuko_check(choku_cords_1, taiko_cords_1)
+                int_1st_x = int_x
+                int_1st_y = int_y
+
+                # 交差角度が制限範囲内でない場合は処理を中断する
+                if theta < 60 or theta > 120:
+                    pass
+                    # 折れ曲がりの切妻屋根
+                    # tsuma_line =
+                    # yane_type =
+                    # f_bent_gable_roof(order, tsuma_line, yane_type)
+
+                # もう一方の直交する辺は．L点と1つ次の点で結ばれる線分
+                # 直交する辺の座標ペア
+                if num == (new_nodes - 1):
+                    choku_cords_2 = [cords[num], cords[0]]
+                else:
+                    choku_cords_2 = [cords[num], cords[num + 1]]
+
+                # もう一方の対向する辺は，L点から３つ目と４つ目の点で結ばれる線分
+                # 対向する辺の座標ペア
+                taiko_cords_2 = []
+                if (num + 3) > (new_nodes - 1):
+                    taiko_cords_2.append(cords[num + 3 - new_nodes])
+                else:
+                    taiko_cords_2.append(cords[num + 3])
+                if (num + 4) > (new_nodes - 1):
+                    taiko_cords_2.append(cords[num + 3 - new_nodes + 1])
+                else:
+                    taiko_cords_2.append(cords[num + 4])
+
+                print("choku_cords_2", choku_cords_2)
+                print("taiko_cords_2", taiko_cords_2)
+
+                # 直交する直線bと対向する辺との直交条件を確認する
+                f_chokuko_check(choku_cords_2, taiko_cords_2)
+                int_2nd_x = int_x
+                int_2nd_y = int_y
+
+                # 交差角度が制限範囲内でない場合は処理を中断する
+                if theta < 60 or theta > 120:
+                    pass
+                    # 折れ曲がりの切妻屋根
+                    # tsuma_line =
+                    # yane_type =
+                    # f_bent_gable_roof(order, tsuma_line, yane_type)
+            else:
+                continue
+            print("normal termination")
+            continue
+        print("All finished")
+
+        # L点から対向する二辺までの距離を比較する
+        # L点の座標
+        print(cords[num][1])
+        print(cords[num][0])
+        # 交点１までの距離
+        div_line_a = math.sqrt((cords[num][1] - int_1st_x) ** 2 + (cords[num][0] - int_1st_y) ** 2)
+        print("div_line_a=", div_line_a)
+        # 交点２までの距離
+        div_line_b = math.sqrt((cords[num][1] - int_2nd_x) ** 2 + (cords[num][0] - int_2nd_y) ** 2)
+        print("div_line_b=", div_line_b)
+
+        # 距離の短い方の線分を分割線とする
+        if div_line_a < div_line_b:
+            print("分割線はdiv_line_a")
+            # 分割点はD1点（交点１）
+            d1 = [int_1st_y, int_1st_x]
+            # 座標値のリストにD1点の座標値を追加する
+            cords.extend([d1])
+            print(cords)
+            # 頂点並びの辞書に分割点を追加する
+            d1_num = new_nodes + 1
+            order['D1'] = d1_num
+            print('line_a', order)
+
+            # 四角形D1-R1-R2-R3
+            rect_1_name = ['D1', 'R1', 'R2', 'R3']
+            # 四角形L1-D1-R4-R5
+            rect_2_name = ['L1', 'D1', 'R4', 'R5']
+
+        elif div_line_a > div_line_b:
+            print("分割線はdiv_line_b")
+            # 分割点はD2点（交点２）
+            d2 = [int_2nd_y, int_2nd_x]
+            # 座標値のリストにD2点の座標値を追加する
+            cords.extend([d2])
+            print(cords)
+            # 頂点並びの辞書に分割点を追加する
+            d2_num = new_nodes + 1
+            order['D2'] = d2_num
+            print('line_b', order)
+
+            # 四角形L1-R1-R2-D2
+            rect_1_name = ['L1', 'R1', 'R2', 'D2']
+            # 四角形D2-R3-R4-R5
+            rect_2_name = ['D2', 'R3', 'R4', 'R5']
+
+        # 辞書の中味に従ってリストの座標データで四角形を作る
+        rect_1_list = []
+        for name in rect_1_name:
+            n = order[name]
+            rect_1_list.append(cords[n])
+            # tsuma_line =
+            # yane_type =
+            # f_make_roof(rect_1_list, tsuma_line, yane_type)
+        print(rect_1_list)
+
+        # 辞書の中味に従ってリストの座標データで四角形を作る
+        rect_2_list = []
+        for name in rect_2_name:
+            n = order[name]
+            rect_2_list.append(cords[n])
+            # tsuma_line =
+            # yane_type =
+            # f_make_roof(rect_2_list, tsuma_line, yane_type)
+        print(rect_2_list)
 
     # 8角形を３つの四角形に分割する
     def octagonal_divider(cords):
@@ -2366,157 +2499,6 @@ def f_build_start():
 
         print(oct_type)
 
-    # 6角形を2つに四角形分割する
-    def hexagonal_divider(cords):
-        # L点の直交条件．対向する辺との交点の角度制限を確認する．
-        for LR_key in order:
-            if LR_key == 'L1':
-                print(LR_key)
-                num = order[LR_key]
-                # print(num)
-
-                # 直交する辺は．L点と1つ前の点で結ばれる線分
-                # 直交する辺の座標ペア
-                if num == 0:
-                    choku_cords_1 = [cords[num], cords[new_nodes - 1]]
-                else:
-                    choku_cords_1 = [cords[num], cords[num - 1]]
-
-                # 対向する辺は，L点から２つ目と３つ目の点で結ばれる線分
-                # 対向する辺の座標ペア
-                # hen_coprds = [[] for _ in range(hen_cnt)]
-                taiko_cords_1 = []
-                if (num + 2) > (new_nodes - 1):
-                    taiko_cords_1.append(cords[num + 2 - new_nodes])
-                else:
-                    taiko_cords_1.append(cords[num + 2])
-                if (num + 3) > (new_nodes - 1):
-                    taiko_cords_1.append(cords[num + 3 - new_nodes])
-                else:
-                    taiko_cords_1.append(cords[num + 3])
-
-                print("choku_cords_1", choku_cords_1)
-                print("taiko_cords_1", taiko_cords_1)
-
-                # 直交する直線aと対向する辺との直交条件を確認する
-                f_chokuko_check(choku_cords_1, taiko_cords_1)
-                int_1st_x = int_x
-                int_1st_y = int_y
-
-                # 交差角度が制限範囲内でない場合は処理を中断する
-                if theta < 60 or theta > 120:
-                    pass
-                    # 折れ曲がりの切妻屋根
-                    # tsuma_line =
-                    # yane_type =
-                    # f_bent_gable_roof(order, tsuma_line, yane_type)
-
-                # もう一方の直交する辺は．L点と1つ次の点で結ばれる線分
-                # 直交する辺の座標ペア
-                if num == (new_nodes - 1):
-                    choku_cords_2 = [cords[num], cords[0]]
-                else:
-                    choku_cords_2 = [cords[num], cords[num + 1]]
-
-                # もう一方の対向する辺は，L点から３つ目と４つ目の点で結ばれる線分
-                # 対向する辺の座標ペア
-                taiko_cords_2 = []
-                if (num + 3) > (new_nodes - 1):
-                    taiko_cords_2.append(cords[num + 3 - new_nodes])
-                else:
-                    taiko_cords_2.append(cords[num + 3])
-                if (num + 4) > (new_nodes - 1):
-                    taiko_cords_2.append(cords[num + 3 - new_nodes + 1])
-                else:
-                    taiko_cords_2.append(cords[num + 4])
-
-                print("choku_cords_2", choku_cords_2)
-                print("taiko_cords_2", taiko_cords_2)
-
-                # 直交する直線bと対向する辺との直交条件を確認する
-                f_chokuko_check(choku_cords_2, taiko_cords_2)
-                int_2nd_x = int_x
-                int_2nd_y = int_y
-
-                # 交差角度が制限範囲内でない場合は処理を中断する
-                if theta < 60 or theta > 120:
-                    pass
-                    # 折れ曲がりの切妻屋根
-                    # tsuma_line =
-                    # yane_type =
-                    # f_bent_gable_roof(order, tsuma_line, yane_type)
-            else:
-                continue
-            print("normal termination")
-            continue
-        print("All finished")
-
-        # L点から対向する二辺までの距離を比較する
-        # L点の座標
-        print(cords[num][1])
-        print(cords[num][0])
-        # 交点１までの距離
-        div_line_a = math.sqrt((cords[num][1] - int_1st_x) ** 2 + (cords[num][0] - int_1st_y) ** 2)
-        print("div_line_a=", div_line_a)
-        # 交点２までの距離
-        div_line_b = math.sqrt((cords[num][1] - int_2nd_x) ** 2 + (cords[num][0] - int_2nd_y) ** 2)
-        print("div_line_b=", div_line_b)
-
-        # 距離の短い方の線分を分割線とする
-        if div_line_a < div_line_b:
-            print("分割線はdiv_line_a")
-            # 分割点はD1点（交点１）
-            d1 = [int_1st_y, int_1st_x]
-            # 座標値のリストにD1点の座標値を追加する
-            cords.extend([d1])
-            print(cords)
-            # 頂点並びの辞書に分割点を追加する
-            d1_num = new_nodes + 1
-            order['D1'] = d1_num
-            print('line_a', order)
-
-            # 四角形D1-R1-R2-R3
-            rect_1_name = ['D1', 'R1', 'R2', 'R3']
-            # 四角形L1-D1-R4-R5
-            rect_2_name = ['L1', 'D1', 'R4', 'R5']
-
-        elif div_line_a > div_line_b:
-            print("分割線はdiv_line_b")
-            # 分割点はD2点（交点２）
-            d2 = [int_2nd_y, int_2nd_x]
-            # 座標値のリストにD2点の座標値を追加する
-            cords.extend([d2])
-            print(cords)
-            # 頂点並びの辞書に分割点を追加する
-            d2_num = new_nodes + 1
-            order['D2'] = d2_num
-            print('line_b', order)
-
-            # 四角形L1-R1-R2-D2
-            rect_1_name = ['L1', 'R1', 'R2', 'D2']
-            # 四角形D2-R3-R4-R5
-            rect_2_name = ['D2', 'R3', 'R4', 'R5']
-
-        # 辞書の中味に従ってリストの座標データで四角形を作る
-        rect_1_list = []
-        for name in rect_1_name:
-            n = order[name]
-            rect_1_list.append(cords[n])
-            # tsuma_line =
-            # yane_type =
-            # f_make_roof(rect_1_list, tsuma_line, yane_type)
-        print(rect_1_list)
-
-        # 辞書の中味に従ってリストの座標データで四角形を作る
-        rect_2_list = []
-        for name in rect_2_name:
-            n = order[name]
-            rect_2_list.append(cords[n])
-            # tsuma_line =
-            # yane_type =
-            # f_make_roof(rect_2_list, tsuma_line, yane_type)
-        print(rect_2_list)
-
     # 普通建物を１件ずつモデリングする（逐次処理）
     def main():
         list_len = len(hutsu_list)
@@ -2603,19 +2585,13 @@ def f_build_start():
             # L点とR点をリストおよび辞書に振り分ける
             gene_lr_listdic(new_nodes)
 
-
-            # 10角形の四角形分割
-            if new_nodes == 10:
-                decagon_divider(cord2)
-
-            # ８角形の四角形分割
-            if new_nodes == 8:
-                octagonal_divider(cord2)
-
             # ６角形の四角形分割
             if new_nodes == 6:
                 hexagonal_divider(cord2)
 
+            # ８角形の四角形分割
+            elif new_nodes == 8:
+                octagonal_divider(cord2)
 
             # 屋根タイプ別の比率を設定する
             # モデリングする
