@@ -1974,10 +1974,10 @@ def f_build_start():
                     order['D1a'] = d1a_num
                     print('line_1a', order)
 
-                    # 四角形L1-R1-R2-D1a
+                    # 四角形 L1-R1-R2-D1a
                     rect_1_name = ['L1', 'R1', 'R2', 'D1a']
-                    # ６角形D1a-R3-L2-R4-R5-R6
-                    hex_1_name = ['D1a', 'R3', 'L2', 'R4', 'R5', 'R6']
+                    # ６角形 L2-R4-R5-R6-D1a-R3
+                    hex_1_name = ['L2', 'R4', 'R5', 'R6', 'D1a', 'R3']
 
                 # D_1b_5_6が最短の分割線
                 elif min_div_line[0][0] == 'D_1b_5_6':
@@ -1993,10 +1993,10 @@ def f_build_start():
                     order['D1b'] = d1b_num
                     print('line_1b', order)
 
-                    # 四角形L1-D1b-R5-R6
+                    # 四角形 L1-D1b-R5-R6
                     rect_1_name = ['L1', 'D1b', 'R5', 'R6']
-                    # ６角形R1-R2-R3-L2-R4-D1b
-                    hex_1_name = ['R1', 'R2', 'R3', 'L2', 'R4', 'D1b']
+                    # ６角形 L2-R4-D1b-R1-R2-R3
+                    hex_1_name = ['L2', 'R4', 'D1b', 'R1', 'R2', 'R3']
 
                 # D_2a_2_3が最短の分割線
                 if min_div_line[0][0] == 'D_2a_2_3':
@@ -2012,9 +2012,9 @@ def f_build_start():
                     order['D2a'] = d1a_num
                     print('line_2a', order)
 
-                    # 四角形L2-R4-R5-D2a
+                    # 四角形 L2-R4-R5-D2a
                     rect_1_name = ['L2', 'R4', 'R5', 'D2a']
-                    # ６角形L1-R1-R2-R3-D2a-R6
+                    # ６角形 L1-R1-R2-R3-D2a-R6
                     hex_1_name = ['L1', 'R1', 'R2', 'R3', 'D2a', 'R6']
 
                 # D_2b_5_6が最短の分割線
@@ -2031,10 +2031,10 @@ def f_build_start():
                     order['D2b'] = d1b_num
                     print('line_2b', order)
 
-                    # 四角形L2-D2b-R2-R3
+                    # 四角形 L2-D2b-R2-R3
                     rect_1_name = ['L2', 'D2b', 'R2', 'R3']
-                    # ６角形R1-D2b-R4-R5-R6-L1
-                    hex_1_name = ['R1', 'D2b', 'R4', 'R5', 'R6', 'L1']
+                    # ６角形 L1-R1-D2b-R4-R5-R6
+                    hex_1_name = ['L1', 'R1', 'D2b', 'R4', 'R5', 'R6']
 
                 # 辞書の中味に従ってリストの座標データで四角形を作る
                 rect_1_list = []
@@ -2050,7 +2050,8 @@ def f_build_start():
                     n = order[name]
                     hex_1_list.append(cords[n])
                 print(hex_1_list)
-                # hexagonal_divider(hex_1_list)
+                # ６角形分割のためには新しく辞書orderを作り直す必要がある．
+                hexagonal_divider(hex_1_list)
 
             elif flag_edge_2_3 == True and flag_edge_3_4 == True:
                 oct_s_type = 'typeA_S'
@@ -2466,6 +2467,11 @@ def f_build_start():
 
     # 6角形を2つに四角形分割する
     def hexagonal_divider(cords):
+        # 頂点データ数の確認
+        nodes_hex = 6
+        nod_chk = len(cords)
+        if nodes_hex != nod_chk:
+            pass
         # L点の直交条件．対向する辺との交点の角度制限を確認する．
         for LR_key in order:
             if LR_key == 'L1':
@@ -2475,7 +2481,7 @@ def f_build_start():
                 # 直交する辺は．L点と1つ前の点で結ばれる線分
                 # 直交する辺の座標ペア
                 if num == 0:
-                    choku_cords_1 = [cords[num], cords[new_nodes - 1]]
+                    choku_cords_1 = [cords[num], cords[nodes_hex - 1]]
                 else:
                     choku_cords_1 = [cords[num], cords[num - 1]]
 
@@ -2483,12 +2489,12 @@ def f_build_start():
                 # 対向する辺の座標ペア
                 # hen_coprds = [[] for _ in range(hen_cnt)]
                 taiko_cords_1 = []
-                if (num + 2) > (new_nodes - 1):
-                    taiko_cords_1.append(cords[num + 2 - new_nodes])
+                if (num + 2) > (nodes_hex - 1):
+                    taiko_cords_1.append(cords[num + 2 - nodes_hex])
                 else:
                     taiko_cords_1.append(cords[num + 2])
-                if (num + 3) > (new_nodes - 1):
-                    taiko_cords_1.append(cords[num + 3 - new_nodes])
+                if (num + 3) > (nodes_hex - 1):
+                    taiko_cords_1.append(cords[num + 3 - nodes_hex])
                 else:
                     taiko_cords_1.append(cords[num + 3])
 
@@ -2510,7 +2516,7 @@ def f_build_start():
 
                 # もう一方の直交する辺は．L点と1つ次の点で結ばれる線分
                 # 直交する辺の座標ペア
-                if num == (new_nodes - 1):
+                if num == (nodes_hex - 1):
                     choku_cords_2 = [cords[num], cords[0]]
                 else:
                     choku_cords_2 = [cords[num], cords[num + 1]]
@@ -2518,12 +2524,12 @@ def f_build_start():
                 # もう一方の対向する辺は，L点から３つ目と４つ目の点で結ばれる線分
                 # 対向する辺の座標ペア
                 taiko_cords_2 = []
-                if (num + 3) > (new_nodes - 1):
-                    taiko_cords_2.append(cords[num + 3 - new_nodes])
+                if (num + 3) > (nodes_hex - 1):
+                    taiko_cords_2.append(cords[num + 3 - nodes_hex])
                 else:
                     taiko_cords_2.append(cords[num + 3])
-                if (num + 4) > (new_nodes - 1):
-                    taiko_cords_2.append(cords[num + 3 - new_nodes + 1])
+                if (num + 4) > (nodes_hex - 1):
+                    taiko_cords_2.append(cords[num + 3 - nodes_hex + 1])
                 else:
                     taiko_cords_2.append(cords[num + 4])
 
@@ -2568,7 +2574,7 @@ def f_build_start():
             cords.extend([d1])
             print(cords)
             # 頂点並びの辞書に分割点を追加する
-            d1_num = new_nodes
+            d1_num = nodes_hex
             order['D1'] = d1_num
             print('line_a', order)
 
@@ -2585,7 +2591,7 @@ def f_build_start():
             cords.extend([d2])
             print(cords)
             # 頂点並びの辞書に分割点を追加する
-            d2_num = new_nodes
+            d2_num = nodes_hex
             order['D2'] = d2_num
             print('line_b', order)
 
