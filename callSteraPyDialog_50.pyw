@@ -321,7 +321,7 @@ def f_build_start():
         print("角度", theta)
 
     # L点とR点をリストおよび辞書に振り分ける
-    def f_gene_lr_listdic(nodes, cord):
+    def f_gene_lr_dic(nodes, cord):
         global l_num
         l_num = 1
         global r_num
@@ -2062,21 +2062,22 @@ def f_build_start():
                 # tsuma_line =
                 # yane_type =
                 # f_make_roof(rect_1_list, tsuma_line, yane_type)
-                
+
+                # 辞書の中味に従ってリストの座標データで６角形を作る
                 hex_1_list = []
                 for name in hex_1_name:
                     n = order[name]
                     hex_1_list.append(cords[n])
                 print('hex_1_list', hex_1_list)
-                # hex_1_nameでorderを作り直す
+                # リストと辞書をクリアする
+                l_list.clear()
+                r_list.clear()
+                r_suslist.clear()
                 order.clear()
-                idx = 0
-                for d in hex_1_name:
-                    order[d] = idx
-                    idx += 1
-                print(order)
-                # ６角形分割のためには新しく辞書orderを作り直す必要がある．
-                # hexagonal_divider(hex_1_list)
+                # ６角形分割のためには新しく辞書orderを作り直す
+                f_ccw_check(6, hex_1_list)
+                f_gene_lr_dic(6, hex_1_list)
+                hexagonal_divider(hex_1_list)
 
             elif flag_edge_2_3 == True and flag_edge_3_4 == True:
                 oct_s_type = 'typeA_S'
@@ -2729,7 +2730,7 @@ def f_build_start():
                 sloping_roof = False
 
             # L点とR点をリストおよび辞書に振り分ける
-            f_gene_lr_listdic(new_nodes, cord2)
+            f_gene_lr_dic(new_nodes, cord2)
 
             # 10角形の四角形分割
             if new_nodes == 10:
