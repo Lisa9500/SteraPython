@@ -36,32 +36,31 @@ def f_build_start():
         cord2 = list(itertools.chain.from_iterable(cords))
         # print("cord2", cord2)
 
-    # 閉じた図形かどうかチェックする
-    def f_chk_close(apex):
+    def f_chk_close(apex, cord):
         global chk_close
         chk_close = False
-        if (cord2[0][0] == cord2[apex - 1][0]) and (cord2[0][1] == cord2[apex - 1][1]):
+        if (cord[0][0] == cord[apex - 1][0]) and (cord[0][1] == cord[apex - 1][1]):
             chk_close = True
         print('chk_close', chk_close)
         return chk_close
 
     # 頂点間の距離をチェックする，近接する頂点を削除する
-    def f_chk_vert_dist(vert):
+    def f_chk_vert_dist(vert, cord):
         del_nodes_lst = []
         for j in range(vert):
             # 次の頂点までの距離を求める
             if j != (vert - 1):
                 next = j + 1
                 # ベクトルAのX座標の差分
-                chk_vect_x = cord2[j + 1][1] - cord2[j][1]
+                chk_vect_x = cord[j + 1][1] - cord[j][1]
                 # ベクトルAのY座標の差分
-                chk_vect_y = cord2[j + 1][0] - cord2[j][0]
+                chk_vect_y = cord[j + 1][0] - cord[j][0]
                 print(j, "X距離", chk_vect_x)
                 print(j, "Y距離", chk_vect_y)
             else:
                 next = 0
-                chk_vect_x = cord2[0][1] - cord2[j][1]
-                chk_vect_y = cord2[0][0] - cord2[j][0]
+                chk_vect_x = cord[0][1] - cord[j][1]
+                chk_vect_y = cord[0][0] - cord[j][0]
                 print(j, "X距離", chk_vect_x)
                 print(j, "Y距離", chk_vect_y)
             # if abs(chk_vect_x) < 1.0 and abs(chk_vect_y) < 1.0:
@@ -71,8 +70,8 @@ def f_build_start():
                 elif S[next] > 0:
                     del_nodes_lst.append(next)
                 else:
-                    cord2[j][1] = cord2[j][1] + chk_vect_x / 2
-                    cord2[j][0] = cord2[j][0] + chk_vect_y / 2
+                    cord[j][1] = cord[j][1] + chk_vect_x / 2
+                    cord[j][0] = cord[j][0] + chk_vect_y / 2
                     del_nodes_lst.append(next)
         print('削除するノード', del_nodes_lst)
 
@@ -81,17 +80,17 @@ def f_build_start():
             in_cnt = 0
             for lst in range(del_cnt):
                 print('lst', del_nodes_lst[lst])
-                cord2.pop(del_nodes_lst[lst] - in_cnt)
+                cord.pop(del_nodes_lst[lst] - in_cnt)
                 S.pop(del_nodes_lst[lst] - in_cnt)
                 in_cnt += 1
             vert = vert - del_cnt
             for j in range(vert):
-                print(j, 'X', cord2[j][0])
-                print(j, 'Y', cord2[j][1])
+                print(j, 'X', cord[j][0])
+                print(j, 'Y', cord[j][1])
         print('vert=', vert)
 
     # 外積を求めてL点かどうか判断する
-    def f_ccw_check(vert):
+    def f_ccw_check(vert, cord):
         # global new_nodes
         global LH
         LH = 0  # 左回り（反時計回り）
@@ -103,23 +102,23 @@ def f_build_start():
         in_angle = [0.0] * vert
         # 外積を計算する
         for j in range(vert):
-            xs = cord2[j][1]
-            ys = cord2[j][0]
+            xs = cord[j][1]
+            ys = cord[j][0]
             if j == 0:
-                xp = cord2[vert - 1][1]
-                yp = cord2[vert - 1][0]
-                xn = cord2[j + 1][1]
-                yn = cord2[j + 1][0]
+                xp = cord[vert - 1][1]
+                yp = cord[vert - 1][0]
+                xn = cord[j + 1][1]
+                yn = cord[j + 1][0]
             elif j == vert - 1:
-                xp = cord2[j - 1][1]
-                yp = cord2[j - 1][0]
-                xn = cord2[0][1]
-                yn = cord2[0][0]
+                xp = cord[j - 1][1]
+                yp = cord[j - 1][0]
+                xn = cord[0][1]
+                yn = cord[0][0]
             else:
-                xp = cord2[j - 1][1]
-                yp = cord2[j - 1][0]
-                xn = cord2[j + 1][1]
-                yn = cord2[j + 1][0]
+                xp = cord[j - 1][1]
+                yp = cord[j - 1][0]
+                xn = cord[j + 1][1]
+                yn = cord[j + 1][0]
             s = (xp - xs) * (yn - ys) - (xn - xs) * (yp - ys)
             S.append(s)
             print("S[j]=", S[j])
@@ -196,7 +195,7 @@ def f_build_start():
         # print("角度", theta)
 
     # 内角が約180°の頂点を削除する
-    def f_flat_vert(vert):
+    def f_flat_vert(vert, cord):
         global in_angle
         global del_cnt
         del_vert_lst = []
@@ -211,7 +210,7 @@ def f_build_start():
             for lst in range(del_cnt):
                 print('180_lst', del_vert_lst[lst])
                 in_angle.pop(del_vert_lst[lst] - in_cnt)
-                cord2.pop(del_vert_lst[lst] - in_cnt)
+                cord.pop(del_vert_lst[lst] - in_cnt)
                 S.pop(del_vert_lst[lst] - in_cnt)
                 in_cnt += 1
             return del_cnt
@@ -322,21 +321,21 @@ def f_build_start():
         print("角度", theta)
 
     # L点とR点をリストおよび辞書に振り分ける
-    def gene_lr_listdic(nodes):
+    def f_gene_lr_listdic(nodes, cord):
         global l_num
         l_num = 1
         global r_num
         r_num = 1
         for i in range(nodes):
             if S[i] > 0:  # L点の場合の処理
-                l_list.append(cord2[i])
+                l_list.append(cord[i])
                 order["L" + str(l_num)] = i     # 辞書orderにキーL：値indexを追加
                 l_num += 1
             else:  # R点の場合の処理
                 if not l_list:
-                    r_suslist.append(cord2[i])
+                    r_suslist.append(cord[i])
                 else:
-                    r_list.append(cord2[i])
+                    r_list.append(cord[i])
                     order["R" + str(r_num)] = i     # 辞書orderにキーR：値indexを追加
                     r_num += 1
 
@@ -2672,25 +2671,20 @@ def f_build_start():
                 # 頂点数が２以下なのでモデリングしない
 
             # 閉じた図形かどうかを判断し頂点数を求める
-            f_chk_close(vert)
-            if chk_close == True:
+            f_chk_close(vert, cord2)
+            if chk_close:
                 cord2.pop(vert - 1)
                 vert -= 1
                 print('vert', vert)
 
             # 近接している頂点を削除する
-            f_chk_vert_dist(vert)  # new_nodes 登場
-
-            # 近接する頂点の削除により頂点数が５以下となった場合も処理は中断しない．
-            # if new_nodes < 6:
-            #     continue
-            # 処理を続けて４角形にする．４角形にならない場合は，陸屋根建物とするため３角形分割する．
+            f_chk_vert_dist(vert, cord2)
 
             # 頂点がL点かどうかチェックする（外積計算）
-            f_ccw_check(vert)
+            f_ccw_check(vert, cord2)
 
             # 内角が約180°の頂点を削除する
-            f_flat_vert(vert)
+            f_flat_vert(vert, cord2)
             global new_nodes
             new_nodes = vert - del_cnt
 
@@ -2704,8 +2698,10 @@ def f_build_start():
                 up_ang = 240
                 if in_angle[i] < lim_ang:
                     print('内角条件を満たさない', i, in_angle[i])
+                    sloping_roof = False
                 elif lo_ang < in_angle[i] < up_ang:
                     print('内角条件を満たさない', i, in_angle[i])
+                    sloping_roof = False
 
             # 左回りの頂点数と右回りの頂点数を比べて時計回りか反時計回りか判定する
             if LH < RH:
@@ -2729,9 +2725,11 @@ def f_build_start():
             # 頂点並びのL点・R点の辞書を作成する
             global order
             order = {}  # 頂点データの並び順を格納する
+            if l_cnt != len(l_list):
+                sloping_roof = False
 
             # L点とR点をリストおよび辞書に振り分ける
-            gene_lr_listdic(new_nodes)
+            f_gene_lr_listdic(new_nodes, cord2)
 
             # 10角形の四角形分割
             if new_nodes == 10:
