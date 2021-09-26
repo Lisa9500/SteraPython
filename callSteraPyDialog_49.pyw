@@ -447,22 +447,40 @@ def f_build_start():
 
             # 分割点はD0点
             d0 = [int_0_x, int_0_y]
-            # 座標値のリストにD1a点の座標値を追加する
+            # 座標値のリストにD0点の座標値を追加する
             cords.extend([d0])
             print(cords)
             # 頂点並びの辞書に分割点を追加する
-            d0_num = new_nodes + 1
+            d0_num = new_nodes
             order['D0'] = d0_num
             print('line_d0', order)
 
             # 四角形と８角形に分割する
-            # if dist_0a < dist_0b:
+            if dist_0a < dist_0b:
+                # L1点と次のR点とその次のR点とD点
                 # num0, num0+1, num0+2, d0_num
-
+                rect_1_name = ['L1', 'R1', 'R2', 'D0']
+                rect_1_list = []
+                for name in rect_1_name:
+                    n = order[name]
+                    rect_1_list.append(cords[n])
+                    # tsuma_line =
+                    # yane_type =
+                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
+                print(rect_1_list)
+                # L1点，R1点，R2点を削除する
+                order.pop('L1')
+                order.pop('R1')
+                order.pop('R2')
+                print(order)
+                # D点と残りのR点
                 # d0_num, num0+3, num0+4, num0+5, num0+6, num0+7, num0+8, num0+9
-                # 分割後にIndex0と同じ座標のIndex10が邪魔になる
+                # octa_1_name = {'D0', 'R3', 'L2', 'R4', 'R5', 'L3', 'R6', 'R7'}
+                # L2点，L3点の位置は不定，orderの作り直しが必要？
+                # D点の位置が問題→R点に変更が必要
 
             # elif dist_0a > dist_0b:
+                # L1点と前のR点とその前のR点とD点
                 # num0, d0_num, num0+8, num0+9
 
                 # num0+1, num0+2, num0+3, num0+4, num0+5, num0+6, num0+7, d0_num
@@ -2041,15 +2059,23 @@ def f_build_start():
                 for name in rect_1_name:
                     n = order[name]
                     rect_1_list.append(cords[n])
-                print(rect_1_list)
+                print('rect_1_list', rect_1_list)
                 # tsuma_line =
                 # yane_type =
                 # f_make_roof(rect_1_list, tsuma_line, yane_type)
+                
                 hex_1_list = []
                 for name in hex_1_name:
                     n = order[name]
                     hex_1_list.append(cords[n])
-                print(hex_1_list)
+                print('hex_1_list', hex_1_list)
+                # hex_1_nameでorderを作り直す
+                order.clear()
+                idx = 0
+                for d in hex_1_name:
+                    order[d] = idx
+                    idx += 1
+                print(order)
                 # ６角形分割のためには新しく辞書orderを作り直す必要がある．
                 hexagonal_divider(hex_1_list)
 
@@ -2474,7 +2500,7 @@ def f_build_start():
             pass
         # L点の直交条件．対向する辺との交点の角度制限を確認する．
         for LR_key in order:
-            if LR_key == 'L1':
+            if LR_key == 'L1' or LR_key == 'L2':
                 print(LR_key)
                 num = order[LR_key]
 
@@ -2647,7 +2673,7 @@ def f_build_start():
 
             # 閉じた図形かどうかを判断し頂点数を求める
             f_chk_close(vert)
-            if chk_close == True:
+            if chk_close:
                 cord2.pop(vert - 1)
                 vert -= 1
                 print('vert', vert)
