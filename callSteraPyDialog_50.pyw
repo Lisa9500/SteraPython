@@ -375,6 +375,153 @@ def f_build_start():
         result = f_dist_vert(x1, x2, y1, y2)
         return result
 
+    def f_deca_divline(num0, cords):
+        # 直交する辺は．L点と1つ前の点で結ばれる線分
+        # 直交する辺の座標ペア
+        if num0 == 0:
+            choku_cords_0a = [cords[num0], cords[new_nodes - 1]]
+        else:
+            choku_cords_0a = [cords[num0], cords[num0 - 1]]
+        global dist_0a
+        dist_0a = f_dist_cords(choku_cords_0a)
+        print(dist_0a)
+        return dist_0a
+
+        # もう一方の直交する辺は．L点と次の点で結ばれる線分
+        # 直交する辺の座標ペア
+        if num0 == (new_nodes - 1):
+            choku_cords_0b = [cords[num0], cords[0]]
+        else:
+            choku_cords_0b = [cords[num0], cords[num0 + 1]]
+        global dist_0b
+        dist_0b = f_dist_cords(choku_cords_0b)
+        print(dist_0b)
+        return dist_0b
+
+        # 短い辺を分割線として採用する
+        taiko_cords = []
+        if dist_0a < dist_0b:
+            choku_cords = choku_cords_0a
+            if (num0 + 2) > (new_nodes - 1):
+                taiko_cords.append(cords[num0 + 2 - new_nodes])
+            else:
+                taiko_cords.append(cords[num0 + 2])
+            if (num0 + 3) > (new_nodes - 1):
+                taiko_cords.append(cords[num0 + 3 - new_nodes])
+            else:
+                taiko_cords.append(cords[num0 + 3])
+        elif dist_0a > dist_0b:
+            choku_cords = choku_cords_0b
+            if (num0 - 2) < 0:
+                taiko_cords.append(cords[num0 - 2 + new_nodes])
+            else:
+                taiko_cords.append(cords[num0 - 2])
+            if (num0 - 3) < 0:
+                taiko_cords.append(cords[num0 - 3 + new_nodes])
+            else:
+                taiko_cords.append(cords[num0 - 3])
+        print('choku_cords', choku_cords)
+        print('taiko_cords', taiko_cords)
+
+        # 2直線の交点を求める
+        f_chokuko_check(choku_cords, taiko_cords)
+        int_0_x = int_x
+        int_0_y = int_y
+        # 交差角度が制限範囲内でない場合は処理を中断する
+        # if theta < 60 or theta > 120:
+        #     continue
+        # f_tri_mesh(cord2)
+
+        # 交点が対向する辺上にあるかチェックする
+        if (taiko_cords[0][1] < int_0_x < taiko_cords[1][1]) or (
+                taiko_cords[0][1] > int_0_x > taiko_cords[1][1]):
+            # 交点までの距離
+            div_line_0 = f_dist_vert(choku_cords[0][1], int_0_x, choku_cords[0][0], int_0_y)
+            print("div_line_0=", div_line_0)
+        else:
+            f_inf = float('inf')
+            div_line_0 = f_inf
+
+        # 分割点はD0点
+        d0 = [int_0_x, int_0_y]
+        # 座標値のリストにD0点の座標値を追加する
+        cords.extend([d0])
+        print(cords)
+        # 頂点並びの辞書に分割点を追加する
+        d0_num = new_nodes
+        order['D0'] = d0_num
+        print('line_d0', order)
+
+    def f_make_octa_order(names, cords):
+        # 辞書の中味に従ってリストの座標データで８角形を作る
+        octa_1_list = []
+        for name in names:
+            n = order[name]
+            octa_1_list.append(cords[n])
+        print('octa_1_list', octa_1_list)
+        # リストと辞書をクリアする
+        l_list.clear()
+        r_list.clear()
+        r_suslist.clear()
+        order.clear()
+        # ８角形分割のためには新しく辞書orderを作り直す
+        f_ccw_check(8, octa_1_list)
+        f_gene_lr_dic(8, octa_1_list)
+        hexagonal_divider(octa_1_list)
+
+    def f_dist_a(num, cords):
+        # 直交する辺は．L点と1つ前の点で結ばれる線分
+        # 直交する辺の座標ペア
+        global choku_cords_a
+        if num == 0:
+            choku_cords_a = [cords[num], cords[new_nodes - 1]]
+        else:
+            choku_cords_a = [cords[num], cords[num - 1]]
+        global dist_a
+        dist_a = f_dist_cords(choku_cords_a)
+        print(dist_a)
+        return choku_cords_a
+        return dist_a
+
+    def f_dist_b(num, cords):
+        # もう一方の直交する辺は．L点と次の点で結ばれる線分
+        # 直交する辺の座標ペア
+        global choku_cords_b
+        if num == (new_nodes - 1):
+            choku_cords_b = [cords[num], cords[0]]
+        else:
+            choku_cords_b = [cords[num], cords[num + 1]]
+        global dist_b
+        dist_b = f_dist_cords(choku_cords_b)
+        print(dist_b)
+        return dist_b
+
+    def f_deci_div_line(num, cords, new_nodes, dist_a, dist_b, choku_cords):
+        # 短い辺を分割線として採用する
+        global taiko_cords
+        taiko_cords = []
+        if dist_a < dist_b:
+            if (num + 2) > (new_nodes - 1):
+                taiko_cords.append(cords[num + 2 - new_nodes])
+            else:
+                taiko_cords.append(cords[num + 2])
+            if (num + 3) > (new_nodes - 1):
+                taiko_cords.append(cords[num + 3 - new_nodes])
+            else:
+                taiko_cords.append(cords[num + 3])
+        elif dist_a > dist_b:
+            if (num - 2) < 0:
+                taiko_cords.append(cords[num - 2 + new_nodes])
+            else:
+                taiko_cords.append(cords[num - 2])
+            if (num - 3) < 0:
+                taiko_cords.append(cords[num - 3 + new_nodes])
+            else:
+                taiko_cords.append(cords[num - 3])
+        return taiko_cords
+        print('choku_cords', choku_cords)
+        print('taiko_cords', taiko_cords)
+
     # 10角形を１つの四角形と１つの8角形に分割する
     def decagon_divider(cords):
         if arr_lr_p[0] != 'L':
@@ -382,6 +529,122 @@ def f_build_start():
         elif arr_lr_p[new_nodes - 1 ] == 'R' and arr_lr_p[new_nodes - 2 ] == 'R' and arr_lr_p[1] == 'R' and arr_lr_p[2] == 'R':
             print('R-R-L-R-R'+'index=', 0)
             num0 = arr_index[0]     # num0はL1点のインデックス番号
+
+            # 直交する辺は．L点と1つ前の点で結ばれる線分
+            f_dist_a(num0, cords)
+            dist_0a = dist_a
+            # choku_cords_0a = choku_cords_a
+
+            # もう一方の直交する辺は．L点と次の点で結ばれる線分
+            f_dist_b(num0, cords)
+            dist_0b = dist_b
+            # choku_cords_0b = choku_cords_b
+
+            # 短い辺を分割線として採用する
+            taiko_cords = []
+            if dist_0a < dist_0b:
+                choku_cords = choku_cords_a
+                if (num0 + 2) > (new_nodes - 1):
+                    taiko_cords.append(cords[num0 + 2 - new_nodes])
+                else:
+                    taiko_cords.append(cords[num0 + 2])
+                if (num0 + 3) > (new_nodes - 1):
+                    taiko_cords.append(cords[num0 + 3 - new_nodes])
+                else:
+                    taiko_cords.append(cords[num0 + 3])
+            elif dist_0a > dist_0b:
+                choku_cords = choku_cords_b
+                if (num0 - 2) < 0:
+                    taiko_cords.append(cords[num0 - 2 + new_nodes])
+                else:
+                    taiko_cords.append(cords[num0 - 2])
+                if (num0 - 3) < 0:
+                    taiko_cords.append(cords[num0 - 3 + new_nodes])
+                else:
+                    taiko_cords.append(cords[num0 - 3])
+            print('choku_cords', choku_cords)
+            print('taiko_cords', taiko_cords)
+            # f_deci_div_line(num0, cords, new_nodes, dist_0a, dist_0b, choku_cords)
+            choku_cords_0 = choku_cords
+            taiko_cords_0 = taiko_cords
+
+            # 2直線の交点を求める
+            f_chokuko_check(choku_cords_0, taiko_cords_0)
+            int_0_x = int_x
+            int_0_y = int_y
+            # 交差角度が制限範囲内でない場合は処理を中断する
+            # if theta < 60 or theta > 120:
+            #     continue
+            # f_tri_mesh(cord2)
+
+            # 交点が対向する辺上にあるかチェックする
+            if (taiko_cords[0][1] < int_0_x < taiko_cords[1][1]) or (
+                    taiko_cords[0][1] > int_0_x > taiko_cords[1][1]):
+                # 交点までの距離
+                div_line_0 = f_dist_vert(choku_cords[0][1], int_0_x, choku_cords[0][0], int_0_y)
+                print("div_line_0=", div_line_0)
+            else:
+                f_inf = float('inf')
+                div_line_0 = f_inf
+
+            # 分割点はD0点
+            d0 = [int_0_x, int_0_y]
+            # 座標値のリストにD0点の座標値を追加する
+            cords.extend([d0])
+            print(cords)
+            # 頂点並びの辞書に分割点を追加する
+            d0_num = new_nodes
+            order['D0'] = d0_num
+            print('line_d0', order)
+
+            # 四角形と８角形に分割する
+            if dist_0a < dist_0b:
+                # L1点と次のR点とその次のR点とD点
+                # num0, num0+1, num0+2, d0_num
+                rect_1_name = ['L1', 'R1', 'R2', 'D0']
+                rect_1_list = []
+                for name in rect_1_name:
+                    n = order[name]
+                    rect_1_list.append(cords[n])
+                    # tsuma_line =
+                    # yane_type =
+                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
+                print(rect_1_list)
+                # L1点，R1点，R2点を削除する
+                order.pop('L1')
+                order.pop('R1')
+                order.pop('R2')
+                print(order)
+                # D点と残りのR点
+                # d0_num, num0+3, num0+4, num0+5, num0+6, num0+7, num0+8, num0+9
+                octa_1_name = order.keys()
+
+            elif dist_0a > dist_0b:
+                # L1点と前のR点とその前のR点とD点
+                # num0, num0+1, num0+2, d0_num
+                rect_1_name = ['L1', 'D0', 'R6', 'R7']
+                rect_1_list = []
+                for name in rect_1_name:
+                    n = order[name]
+                    rect_1_list.append(cords[n])
+                    # tsuma_line =
+                    # yane_type =
+                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
+                print(rect_1_list)
+                # L1点，R6点，R7点を削除する
+                order.pop('L1')
+                order.pop('R1')
+                order.pop('R2')
+                print(order)
+                # D点と残りのR点
+                # d0_num, num0+3, num0+4, num0+5, num0+6, num0+7, num0+8, num0+9
+                octa_1_name = order.keys()
+
+            f_make_octa_order(octa_1_name, cords)
+
+        elif arr_lr_p[1] == 'R' and arr_lr_p[2] == 'R' and arr_lr_p[3] == 'L' and arr_lr_p[4] == 'R' and arr_lr_p[5] == 'R':
+            print('R-R-L-R-R'+'index=', 3)
+            num0 = arr_index[3]  # num0はL1点のインデックス番号
             # 直交する辺は．L点と1つ前の点で結ばれる線分
             # 直交する辺の座標ペア
             if num0 == 0:
@@ -456,9 +719,9 @@ def f_build_start():
 
             # 四角形と８角形に分割する
             if dist_0a < dist_0b:
-                # L1点と次のR点とその次のR点とD点
+                # L2点と次のR点とその次のR点とD点
                 # num0, num0+1, num0+2, d0_num
-                rect_1_name = ['L1', 'R1', 'R2', 'D0']
+                rect_1_name = ['L2', 'R3', 'R4', 'D0']
                 rect_1_list = []
                 for name in rect_1_name:
                     n = order[name]
@@ -467,25 +730,36 @@ def f_build_start():
                     # yane_type =
                     # f_make_roof(rect_1_list, tsuma_line, yane_type)
                 print(rect_1_list)
-                # L1点，R1点，R2点を削除する
-                order.pop('L1')
-                order.pop('R1')
-                order.pop('R2')
+                # L2点，R3点，R4点を削除する
+                order.pop('L2')
+                order.pop('R3')
+                order.pop('R4')
                 print(order)
                 # D点と残りのR点
                 # d0_num, num0+3, num0+4, num0+5, num0+6, num0+7, num0+8, num0+9
-                # octa_1_name = {'D0', 'R3', 'L2', 'R4', 'R5', 'L3', 'R6', 'R7'}
-                # L2点，L3点の位置は不定，orderの作り直しが必要？
-                # D点の位置が問題→R点に変更が必要
+                octa_1_name = order.keys()
 
-            # elif dist_0a > dist_0b:
+            elif dist_0a > dist_0b:
                 # L1点と前のR点とその前のR点とD点
-                # num0, d0_num, num0+8, num0+9
+                # num0, num0+1, num0+2, d0_num
+                rect_1_name = ['L2', 'D0', 'R3', 'R4']
+                rect_1_list = []
+                for name in rect_1_name:
+                    n = order[name]
+                    rect_1_list.append(cords[n])
+                    # tsuma_line =
+                    # yane_type =
+                    # f_make_roof(rect_1_list, tsuma_line, yane_type)
+                print(rect_1_list)
+                # L2点，R3点，R4点を削除する
+                order.pop('L2')
+                order.pop('R3')
+                order.pop('R4')
+                print(order)
+                # D点と残りのR点
+                # d0_num, num0+3, num0+4, num0+5, num0+6, num0+7, num0+8, num0+9
+                octa_1_name = order.keys()
 
-                # num0+1, num0+2, num0+3, num0+4, num0+5, num0+6, num0+7, d0_num
-
-        elif arr_lr_p[1] == 'R' and arr_lr_p[2] == 'R' and arr_lr_p[3] == 'L' and arr_lr_p[4] == 'R' and arr_lr_p[5] == 'R':
-            print('R-R-L-R-R'+'index=', 3)
         elif arr_lr_p[2] == 'R' and arr_lr_p[3] == 'R' and arr_lr_p[4] == 'L' and arr_lr_p[5] == 'R' and arr_lr_p[6] == 'R':
             print('R-R-L-R-R'+'index=', 4)
         elif arr_lr_p[3] == 'R' and arr_lr_p[4] == 'R' and arr_lr_p[5] == 'L' and arr_lr_p[6] == 'R' and arr_lr_p[7] == 'R':
@@ -494,6 +768,8 @@ def f_build_start():
             print('R-R-L-R-R'+'index=', 6)
         elif arr_lr_p[5] == 'R' and arr_lr_p[6] == 'R' and arr_lr_p[7] == 'L' and arr_lr_p[8] == 'R' and arr_lr_p[9] == 'R':
             print('R-R-L-R-R'+'index=', 7)
+
+
 
     # 8角形を３つの四角形に分割する
     def octagonal_divider(cords):
