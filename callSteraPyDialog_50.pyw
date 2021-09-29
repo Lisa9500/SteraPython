@@ -36,6 +36,7 @@ def f_build_start():
         cord2 = list(itertools.chain.from_iterable(cords))
         # print("cord2", cord2)
 
+    # 図形が閉じているかチェックする
     def f_chk_close(apex, cord):
         global chk_close
         chk_close = False
@@ -217,7 +218,7 @@ def f_build_start():
 
         print('in_angle', in_angle)
 
-    # 頂点の並びが時計回りなので反時計回りに並び変える
+    # 頂点の並びが時計回りの場合に反時計回りに並び変える
     def f_back_reverse(rev_nodes):
         rev_codes = copy.deepcopy(cord2)
         for j in range(rev_nodes - 1, 0):
@@ -367,6 +368,8 @@ def f_build_start():
     def f_dist_vert(x1, x2, y1, y2):
         dist = math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
         return dist
+
+    # 頂点間の距離を求める
     def f_dist_cords(cords_pair):
         x1 = cords_pair[0][1]
         y1 = cords_pair[0][0]
@@ -375,83 +378,7 @@ def f_build_start():
         result = f_dist_vert(x1, x2, y1, y2)
         return result
 
-    def f_deca_divline(num0, cords):
-        # 直交する辺は．L点と1つ前の点で結ばれる線分
-        # 直交する辺の座標ペア
-        if num0 == 0:
-            choku_cords_0a = [cords[num0], cords[new_nodes - 1]]
-        else:
-            choku_cords_0a = [cords[num0], cords[num0 - 1]]
-        global dist_0a
-        dist_0a = f_dist_cords(choku_cords_0a)
-        print(dist_0a)
-        return dist_0a
-
-        # もう一方の直交する辺は．L点と次の点で結ばれる線分
-        # 直交する辺の座標ペア
-        if num0 == (new_nodes - 1):
-            choku_cords_0b = [cords[num0], cords[0]]
-        else:
-            choku_cords_0b = [cords[num0], cords[num0 + 1]]
-        global dist_0b
-        dist_0b = f_dist_cords(choku_cords_0b)
-        print(dist_0b)
-        return dist_0b
-
-        # 短い辺を分割線として採用する
-        taiko_cords = []
-        if dist_0a < dist_0b:
-            choku_cords = choku_cords_0a
-            if (num0 + 2) > (new_nodes - 1):
-                taiko_cords.append(cords[num0 + 2 - new_nodes])
-            else:
-                taiko_cords.append(cords[num0 + 2])
-            if (num0 + 3) > (new_nodes - 1):
-                taiko_cords.append(cords[num0 + 3 - new_nodes])
-            else:
-                taiko_cords.append(cords[num0 + 3])
-        elif dist_0a > dist_0b:
-            choku_cords = choku_cords_0b
-            if (num0 - 2) < 0:
-                taiko_cords.append(cords[num0 - 2 + new_nodes])
-            else:
-                taiko_cords.append(cords[num0 - 2])
-            if (num0 - 3) < 0:
-                taiko_cords.append(cords[num0 - 3 + new_nodes])
-            else:
-                taiko_cords.append(cords[num0 - 3])
-        print('choku_cords', choku_cords)
-        print('taiko_cords', taiko_cords)
-
-        # 2直線の交点を求める
-        f_chokuko_check(choku_cords, taiko_cords)
-        int_0_x = int_x
-        int_0_y = int_y
-        # 交差角度が制限範囲内でない場合は処理を中断する
-        # if theta < 60 or theta > 120:
-        #     continue
-        # f_tri_mesh(cord2)
-
-        # 交点が対向する辺上にあるかチェックする
-        if (taiko_cords[0][1] < int_0_x < taiko_cords[1][1]) or (
-                taiko_cords[0][1] > int_0_x > taiko_cords[1][1]):
-            # 交点までの距離
-            div_line_0 = f_dist_vert(choku_cords[0][1], int_0_x, choku_cords[0][0], int_0_y)
-            print("div_line_0=", div_line_0)
-        else:
-            f_inf = float('inf')
-            div_line_0 = f_inf
-
-        # 分割点はD0点
-        d0 = [int_0_x, int_0_y]
-        # 座標値のリストにD0点の座標値を追加する
-        cords.extend([d0])
-        print(cords)
-        # 頂点並びの辞書に分割点を追加する
-        d0_num = new_nodes
-        order['D0'] = d0_num
-        print('line_d0', order)
-
+    # 新しく辞書orderを作り直して８角形分割する
     def f_make_octa_order(names, cords):
         # 辞書の中味に従ってリストの座標データで８角形を作る
         octa_1_list = []
@@ -469,6 +396,7 @@ def f_build_start():
         f_gene_lr_dic(8, octa_1_list)
         hexagonal_divider(octa_1_list)
 
+    # 直交する辺ａの町転換距離を求める
     def f_dist_a(num, cords):
         # 直交する辺は．L点と1つ前の点で結ばれる線分
         # 直交する辺の座標ペア
@@ -483,6 +411,7 @@ def f_build_start():
         return choku_cords_a
         return dist_a
 
+    # 直交する辺ｂの町転換距離を求める
     def f_dist_b(num, cords):
         # もう一方の直交する辺は．L点と次の点で結ばれる線分
         # 直交する辺の座標ペア
@@ -496,10 +425,9 @@ def f_build_start():
         print(dist_b)
         return dist_b
 
-    def f_deci_div_line(num, cords, new_nodes, dist_a, dist_b, choku_cords):
+    # 短い直交する辺を分割線として対向する辺の頂点座標を求める
+    def f_deci_div_line(num, cords, new_nodes, dist_a, dist_b, taiko_cords):
         # 短い辺を分割線として採用する
-        global taiko_cords
-        taiko_cords = []
         if dist_a < dist_b:
             if (num + 2) > (new_nodes - 1):
                 taiko_cords.append(cords[num + 2 - new_nodes])
@@ -519,8 +447,21 @@ def f_build_start():
             else:
                 taiko_cords.append(cords[num - 3])
         return taiko_cords
-        print('choku_cords', choku_cords)
         print('taiko_cords', taiko_cords)
+
+    # 対向する辺との交点が辺の上にあるかチェックする
+    def f_taiko_chk(int_x, int_y, choku_cords, taiko_cords):
+        # 交点が対向する辺上にあるかチェックする
+        global div_line
+        if (taiko_cords[0][1] < int_x < taiko_cords[1][1]) or (
+                taiko_cords[0][1] > int_x > taiko_cords[1][1]):
+            # 交点までの距離
+            div_line = f_dist_vert(choku_cords[0][1], int_x, choku_cords[0][0], int_y)
+            print("div_line_0=", div_line)
+        else:
+            f_inf = float('inf')
+            div_line = f_inf
+        return div_line
 
     # 10角形を１つの四角形と１つの8角形に分割する
     def decagon_divider(cords):
@@ -533,38 +474,21 @@ def f_build_start():
             # 直交する辺は．L点と1つ前の点で結ばれる線分
             f_dist_a(num0, cords)
             dist_0a = dist_a
-            # choku_cords_0a = choku_cords_a
 
             # もう一方の直交する辺は．L点と次の点で結ばれる線分
             f_dist_b(num0, cords)
             dist_0b = dist_b
-            # choku_cords_0b = choku_cords_b
 
-            # 短い辺を分割線として採用する
-            taiko_cords = []
             if dist_0a < dist_0b:
                 choku_cords = choku_cords_a
-                if (num0 + 2) > (new_nodes - 1):
-                    taiko_cords.append(cords[num0 + 2 - new_nodes])
-                else:
-                    taiko_cords.append(cords[num0 + 2])
-                if (num0 + 3) > (new_nodes - 1):
-                    taiko_cords.append(cords[num0 + 3 - new_nodes])
-                else:
-                    taiko_cords.append(cords[num0 + 3])
             elif dist_0a > dist_0b:
                 choku_cords = choku_cords_b
-                if (num0 - 2) < 0:
-                    taiko_cords.append(cords[num0 - 2 + new_nodes])
-                else:
-                    taiko_cords.append(cords[num0 - 2])
-                if (num0 - 3) < 0:
-                    taiko_cords.append(cords[num0 - 3 + new_nodes])
-                else:
-                    taiko_cords.append(cords[num0 - 3])
             print('choku_cords', choku_cords)
-            print('taiko_cords', taiko_cords)
-            # f_deci_div_line(num0, cords, new_nodes, dist_0a, dist_0b, choku_cords)
+
+            # # 短い辺を分割線として採用する
+            taiko_cords = []
+            f_deci_div_line(num0, cords, new_nodes, dist_0a, dist_0b, taiko_cords)
+
             choku_cords_0 = choku_cords
             taiko_cords_0 = taiko_cords
 
@@ -578,14 +502,10 @@ def f_build_start():
             # f_tri_mesh(cord2)
 
             # 交点が対向する辺上にあるかチェックする
-            if (taiko_cords[0][1] < int_0_x < taiko_cords[1][1]) or (
-                    taiko_cords[0][1] > int_0_x > taiko_cords[1][1]):
-                # 交点までの距離
-                div_line_0 = f_dist_vert(choku_cords[0][1], int_0_x, choku_cords[0][0], int_0_y)
-                print("div_line_0=", div_line_0)
-            else:
-                f_inf = float('inf')
-                div_line_0 = f_inf
+            f_taiko_chk(int_0_x, int_0_y, choku_cords, taiko_cords)
+            div_line_0 = div_line
+            if div_line_0 == float('inf'):
+                pass
 
             # 分割点はD0点
             d0 = [int_0_x, int_0_y]
